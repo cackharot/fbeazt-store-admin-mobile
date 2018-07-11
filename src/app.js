@@ -1,51 +1,9 @@
-
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import { Container, Header, Content, Icon } from 'native-base';
-
 import { iconsMap, iconsLoaded } from './appIcons';
+import { registerScreens } from './screens';
 
-class OrderListComponent extends Component {
-  render() {
-    return (
-      <Container>
-        <Header />
-        <Content>
-          <Icon ios='ios-home' name='home' />
-          <Icon ios='ios-menu' android="md-menu" style={{ fontSize: 20, color: 'red' }} />
-          <Icon type="FontAwesome" name="home" />
-        </Content>
-      </Container>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-Navigation.registerComponent('order_list', () => OrderListComponent);
+registerScreens();
 
 iconsLoaded.then(() => {
   startApp();
