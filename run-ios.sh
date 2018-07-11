@@ -1,1 +1,1 @@
-react-native run-ios --simulator=iPhone 8 Plus
+react-native run-ios --simulator="iPhone 8 Plus"

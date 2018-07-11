@@ -1,4 +1,3 @@
-import { AppRegistry } from 'react-native';
-import App from './App';
-
-AppRegistry.registerComponent('foodbeaztStoreAdmin', () => App);
+// import { AppRegistry } from 'react-native';
+require('./src/index');
+// AppRegistry.registerComponent('foodbeaztStoreAdmin', () => App);
