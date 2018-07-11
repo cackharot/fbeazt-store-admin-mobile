@@ -147,6 +147,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation 'com.android.support:design:25.4.0'
     implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation project(':react-native-vector-icons')
     implementation project(':react-native-navigation')
 }
 

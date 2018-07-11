@@ -7,19 +7,21 @@ import {
   View
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
+import { Container, Header, Content, Icon } from 'native-base';
 
-class react_native_navigation_bootstrap extends Component {
+import { iconsMap, iconsLoaded } from './appIcons';
+
+class OrderListComponent extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Natisdfd
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Container>
+        <Header />
+        <Content>
+          <Icon ios='ios-home' name='home' />
+          <Icon ios='ios-menu' android="md-menu" style={{ fontSize: 20, color: 'red' }} />
+          <Icon type="FontAwesome" name="home" />
+        </Content>
+      </Container>
     );
   }
 }
@@ -43,32 +45,59 @@ const styles = StyleSheet.create({
   },
 });
 
-Navigation.registerComponent('react-native-navigation-bootstrap', () => react_native_navigation_bootstrap);
-Navigation.events().registerAppLaunchedListener(() => {
-  // Navigation.startSingleScreenApp({
-  //   screen: {
-  //     screen: 'react-native-navigation-bootstrap',
-  //     title: 'Navigation Bootstrap'
-  //   }
-  // });
+Navigation.registerComponent('order_list', () => OrderListComponent);
+
+iconsLoaded.then(() => {
+  startApp();
+});
+
+function setDefaultNavOptions() {
+  Navigation.setDefaultOptions({
+    statusBar: {
+      drawBehind: false,
+      visible: true
+    },
+    topBar: {
+      visible: false
+    },
+    bottomTabs: {
+      titleDisplayMode: 'alwaysShow',
+      drawBehind: false
+    },
+    bottomTab: {
+      textColor: 'black'
+    }
+  });
+}
+
+function initNav() {
   Navigation.setRoot({
     root: {
       bottomTabs: {
         children: [
           {
             component: {
-              name: 'react-native-navigation-bootstrap',
+              name: 'order_list',
+              options: {
+                bottomTab: {
+                  text: 'Orders',
+                  icon: iconsMap['ios-people'],
+                }
+              },
               passProps: {
-                text: 'This is tab 1',
-                myFunction: () => 'Hello from a function!',
               },
             },
           },
           {
             component: {
-              name: 'react-native-navigation-bootstrap',
+              name: 'order_list',
+              options: {
+                bottomTab: {
+                  text: 'Reports',
+                  icon: require('./images/one.png')
+                }
+              },
               passProps: {
-                text: 'This is tab 2',
               },
             },
           },
@@ -76,4 +105,11 @@ Navigation.events().registerAppLaunchedListener(() => {
       },
     }
   });
-});
+}
+
+function startApp() {
+  Navigation.events().registerAppLaunchedListener(() => {
+    setDefaultNavOptions();
+    initNav();
+  });
+}
