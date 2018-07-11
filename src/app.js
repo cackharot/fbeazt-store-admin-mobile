@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
 import { Navigation } from 'react-native-navigation';
 import { iconsMap, iconsLoaded } from './appIcons';
 import { registerScreens } from './screens';
+import configureStore from './store/configureStore';
 
-registerScreens();
+const store = configureStore();
+
+registerScreens(store);
 
 iconsLoaded.then(() => {
   startApp();
@@ -35,7 +37,7 @@ function initNav() {
         children: [
           {
             component: {
-              name: 'order_list',
+              name: 'app.orderList',
               options: {
                 bottomTab: {
                   text: 'Orders',
@@ -48,11 +50,24 @@ function initNav() {
           },
           {
             component: {
-              name: 'order_list',
+              name: 'app.orderList',
               options: {
                 bottomTab: {
                   text: 'Reports',
-                  icon: require('./images/one.png')
+                  icon: iconsMap['ios-home']
+                }
+              },
+              passProps: {
+              },
+            },
+          },
+          {
+            component: {
+              name: 'app.orderList',
+              options: {
+                bottomTab: {
+                  text: 'Settings',
+                  icon: iconsMap['ios-keypad']
                 }
               },
               passProps: {

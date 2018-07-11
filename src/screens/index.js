@@ -1,11 +1,7 @@
 const { Navigation } = require('react-native-navigation');
-const WelcomeScreen = require('./WelcomeScreen');
-const OrderListComponent = require('../components/orderList');
+import OrderListComponent from '../components/orderList';
+import reduxHOC from './reduxHOC';
 
-function registerScreens() {
-  Navigation.registerComponent('order_list', () => OrderListComponent);
+export function registerScreens(store) {
+  Navigation.registerComponent('app.orderList', () => reduxHOC(OrderListComponent, store));
 }
-
-module.exports = {
-  registerScreens
-};
