@@ -1,5 +1,5 @@
 const { Navigation } = require('react-native-navigation');
-import OrderListComponent from '../components/orderList';
+import OrderListComponent from '../modules/orderList';
 import reduxHOC from './reduxHOC';
 
 export function registerScreens(store) {
