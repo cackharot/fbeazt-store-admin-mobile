@@ -17,15 +17,26 @@ function setDefaultNavOptions() {
       drawBehind: false,
       visible: true
     },
+    layout: {
+      backgroundColor: '#4D4B88',
+      orientation: ['portrait', 'landscape'] // An array of supported orientations
+    },
     topBar: {
-      visible: false
+      visible: true,
+      background: {
+        color: '#4D4B88'
+      }
     },
     bottomTabs: {
       titleDisplayMode: 'alwaysShow',
+      backgroundColor: '#4D4B88',
       drawBehind: false
     },
     bottomTab: {
-      textColor: 'black'
+      textColor: 'white',
+      iconColor: 'white',
+      selectedIconColor: '#4FCBC6',
+      selectedTextColor: '#4FCBC6',
     }
   });
 }

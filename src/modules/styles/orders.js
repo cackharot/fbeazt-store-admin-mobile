@@ -19,7 +19,16 @@ const styles = StyleSheet.create({
 	seperator: {
 		marginTop: 10,
 		backgroundColor: '#8E8E8E'
-	},
+    },
+    segmentIcon:{
+        marginLeft: 0,
+        marginRight: 0,
+        paddingHorizontal: 8,
+    },
+    segmentTitle:{
+        fontSize: 13,
+        paddingRight: 8,
+    },
     listHeading: {
         paddingHorizontal: 16,
         flexDirection: 'row',

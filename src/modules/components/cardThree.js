@@ -27,7 +27,7 @@ class CardThree extends Component {
                 <View style={styles.cardContainer}>
                     <View style={styles.leftContent}>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                            <Icon name='radio-button-off' style={styles.statusIcon} />
+                            <Icon name='megaphone' style={styles.statusIcon} />
                             <Text style={styles.timeago}>{dateStr}</Text>
                         </View>
                         <View style={styles.content}>

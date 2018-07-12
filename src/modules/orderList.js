@@ -9,7 +9,7 @@ import {
   ListView,
   Platform
 } from 'react-native';
-import { Container, Spinner, Header, Title, Body, Content, Icon } from 'native-base';
+import { Container, Segment, Button, Right, Left, Header, Title, Body, Content, Icon } from 'native-base';
 import * as ordersListActions from '../actions/ordersListActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -69,12 +69,36 @@ class OrderListComponent extends Component {
     return (
       this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
         <Container>
-          <Header>
+          <Header hasSegment>
+            <Left />
             <Body>
               <Title>Orders</Title>
             </Body>
+            <Right>
+              <Button transparent>
+                <Icon name="search" />
+              </Button>
+            </Right>
           </Header>
-          <Content>
+          <Segment>
+            <Button first>
+              <Icon name='megaphone' style={styles.segmentIcon}/>
+              <Text style={styles.segmentTitle}>Pending</Text>
+            </Button>
+            <Button>
+              <Icon name='time' style={styles.segmentIcon} />
+              <Text style={styles.segmentTitle}>Cooking</Text>
+            </Button>
+            <Button active={false}>
+              <Icon name='thumbs-up' style={styles.segmentIcon} />
+              <Text style={styles.segmentTitle}>Ready</Text>
+            </Button>
+            <Button last>
+              <Icon name='checkmark-circle' style={styles.segmentIcon} />
+              <Text style={styles.segmentTitle}>Delivered</Text>
+            </Button>
+          </Segment>
+          <Content contentContainerStyle={{flexBasis: '100%'}}>
             <ListView
               style={styles.container}
               enableEmptySections
