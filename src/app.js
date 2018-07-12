@@ -41,7 +41,7 @@ function initNav() {
               options: {
                 bottomTab: {
                   text: 'Orders',
-                  icon: iconsMap['ios-people'],
+                  icon: iconsMap['ios-list'],
                 }
               },
               passProps: {
@@ -54,7 +54,7 @@ function initNav() {
               options: {
                 bottomTab: {
                   text: 'Reports',
-                  icon: iconsMap['ios-home']
+                  icon: iconsMap['ios-stats']
                 }
               },
               passProps: {
@@ -67,7 +67,7 @@ function initNav() {
               options: {
                 bottomTab: {
                   text: 'Settings',
-                  icon: iconsMap['ios-keypad']
+                  icon: iconsMap['ios-settings']
                 }
               },
               passProps: {

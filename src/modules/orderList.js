@@ -100,49 +100,6 @@ class OrderListComponent extends Component {
         </Container>
     );
   }
-
-  render1() {
-    const { storeOrders } = this.props;
-    return (
-      this.state.isLoading ? <Container><Spinner /></Container> :
-        <Container>
-          <Header>
-            <Body>
-              <Title>Orders</Title>
-            </Body>
-          </Header>
-          <Content>
-            <ScrollView
-              style={styles.container}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={this._onRefresh}
-                  colors={['#EA0000']}
-                  tintColor="white"
-                  title="loading..."
-                  titleColor="white"
-                  progressBackgroundColor="white"
-                />
-              }>
-              <View>
-                <View style={styles.listHeading}>
-                  <Text style={styles.listHeadingLeft}>Popular</Text>
-                  <TouchableOpacity>
-                    <Text style={styles.listHeadingRight}>
-                      See all
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                {storeOrders && storeOrders.items && storeOrders.items.map(order => (
-                  <CardTwo key={order.order_id.$oid} order={order} viewOrder={this._viewOrder} />
-                ))}
-              </View>
-            </ScrollView>
-          </Content>
-        </Container>
-    );
-  }
 }
 
 function mapStateToProps(state, ownProps) {
