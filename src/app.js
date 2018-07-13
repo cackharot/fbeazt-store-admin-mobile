@@ -64,6 +64,19 @@ function initNav() {
               name: 'app.orderList',
               options: {
                 bottomTab: {
+                  text: 'Menu',
+                  icon: iconsMap['ios-restaurant']
+                }
+              },
+              passProps: {
+              },
+            },
+          },
+          {
+            component: {
+              name: 'app.orderList',
+              options: {
+                bottomTab: {
                   text: 'Reports',
                   icon: iconsMap['ios-stats']
                 }

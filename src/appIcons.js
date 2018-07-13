@@ -17,6 +17,7 @@ const icons = {
 
     "ios-person": [30, "#bbb"],
     "ios-list": [30, "#bbb"],
+    "ios-restaurant": [30, "#bbb"],
     "ios-pulse": [30, "#bbb"],
     "ios-settings": [30, "#bbb"],
     "ios-cog": [30, "#bbb"],
