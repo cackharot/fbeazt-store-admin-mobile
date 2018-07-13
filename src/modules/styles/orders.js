@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		backgroundColor: '#8E8E8E'
     },
+    statusSegment: {
+        // backgroundColor: '#4D4B88',
+        backgroundColor: 'white',
+    },
     segmentIcon:{
         marginLeft: 0,
         marginRight: 0,

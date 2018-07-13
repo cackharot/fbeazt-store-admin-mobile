@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+const { Navigation } = require('react-native-navigation');
 import {
   RefreshControl,
   ScrollView,
@@ -31,6 +32,7 @@ class OrderListComponent extends Component {
     };
 
     this._viewOrder = this._viewOrder.bind(this);
+    this._updateOrderStatus = this._updateOrderStatus.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
 
@@ -42,8 +44,26 @@ class OrderListComponent extends Component {
   //   if (nextProps.storeOrders) this.setState({ isLoading: false });
   // }
 
-  _viewOrder(order_id) {
-    console.log(`order id ${order_id}`);
+  _viewOrder(storeOrderId) {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: 'app.orderDetails',
+        passProps: {
+          storeOrderId
+        },
+        options: {
+          topBar: {
+            title: {
+              text: `Order Details`
+            }
+          }
+        }
+      }
+    });
+  }
+
+  _updateOrderStatus(storeOrderId, status) {
+    console.log(`order status ${status} ${storeOrderId}`);
   }
 
   _onRefresh() {
@@ -69,20 +89,9 @@ class OrderListComponent extends Component {
     return (
       this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
         <Container>
-          <Header hasSegment>
-            <Left />
-            <Body>
-              <Title>Orders</Title>
-            </Body>
-            <Right>
-              <Button transparent>
-                <Icon name="search" />
-              </Button>
-            </Right>
-          </Header>
-          <Segment>
+          <Segment style={styles.statusSegment}>
             <Button first>
-              <Icon name='megaphone' style={styles.segmentIcon}/>
+              <Icon name='megaphone' style={styles.segmentIcon} />
               <Text style={styles.segmentTitle}>Pending</Text>
             </Button>
             <Button>
@@ -98,14 +107,14 @@ class OrderListComponent extends Component {
               <Text style={styles.segmentTitle}>Delivered</Text>
             </Button>
           </Segment>
-          <Content contentContainerStyle={{flexBasis: '100%'}}>
+          <Content contentContainerStyle={{ flexBasis: '100%' }}>
             <ListView
               style={styles.container}
               enableEmptySections
               // onEndReached={type => this._retrieveNextPage(this.props.type)}
               onEndReachedThreshold={1200}
               dataSource={this.state.dataSource}
-              renderRow={rowData => <CardThree order={rowData} viewOrder={this._viewOrder} />}
+              renderRow={rowData => <CardThree order={rowData} viewOrder={this._viewOrder} updateOrderStatus={this._updateOrderStatus} />}
               renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.seperator} />}
               renderFooter={() => <View style={{ height: 50 }}><ProgressBar /></View>}
               refreshControl={

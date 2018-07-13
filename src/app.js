@@ -23,8 +23,21 @@ function setDefaultNavOptions() {
     },
     topBar: {
       visible: true,
+      drawBehind: true,
+      animate: false,
+      searchBar: false,
+      // title: { color: 'white' },
+      title: { color: 'black' },
+      subtitle: {
+        fontSize: 14,
+        // color: 'white',
+        color: 'black',
+        fontFamily: 'Helvetica',
+        alignment: 'center'
+      },
       background: {
-        color: '#4D4B88'
+        // color: '#4D4B88'
+        color: 'white'
       }
     },
     bottomTabs: {
@@ -47,15 +60,20 @@ function initNav() {
       bottomTabs: {
         children: [
           {
-            component: {
-              name: 'app.orderList',
+            stack: {
+              children: [{
+                component: {
+                  name: 'app.orderList'
+                },
+              }],
               options: {
                 bottomTab: {
                   text: 'Orders',
                   icon: iconsMap['ios-list'],
+                },
+                topBar: {
+                  title: { text: 'Order', color: 'black' }
                 }
-              },
-              passProps: {
               },
             },
           },

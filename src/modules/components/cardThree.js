@@ -19,11 +19,11 @@ class CardThree extends Component {
     }
 
     render() {
-        const { order, viewOrder } = this.props;
+        const { order, viewOrder, updateOrderStatus } = this.props;
         const orderDate = moment(order.created_at.$date).utc();
         const dateStr = orderDate.local(true).fromNow();
         return (
-            <TouchableOpacity activeOpacity={0.8} onPress={viewOrder.bind(this, order.order_id.$oid)}>
+            <TouchableOpacity activeOpacity={0.8} onPress={viewOrder.bind(this, order._id.$oid)}>
                 <View style={styles.cardContainer}>
                     <View style={styles.leftContent}>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
@@ -43,7 +43,7 @@ class CardThree extends Component {
                     <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                         <Text style={styles.total}>₹{order.total}</Text>
                         <Text style={styles.listHeadingRight}>{order.store_order_no}</Text>
-                        <TouchableOpacity activeOpacity={0.6} onPress={viewOrder.bind(this, order.order_id.$oid)}>
+                        <TouchableOpacity activeOpacity={0.6} onPress={updateOrderStatus.bind(this, order._id.$oid, 'PREPARING')}>
                             <Icon name='time' style={styles.timeIcon} />
                         </TouchableOpacity>
                     </View>
@@ -59,7 +59,8 @@ class CardThree extends Component {
 
 CardThree.propTypes = {
     order: PropTypes.object.isRequired,
-    viewOrder: PropTypes.func.isRequired
+    viewOrder: PropTypes.func.isRequired,
+    updateOrderStatus: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
