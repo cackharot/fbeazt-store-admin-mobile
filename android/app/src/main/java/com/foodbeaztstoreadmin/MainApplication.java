@@ -3,6 +3,7 @@ package com.foodbeaztstoreadmin;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -23,7 +24,8 @@ public class MainApplication extends NavigationApplication {
     @Override
     public List<ReactPackage> createAdditionalReactPackages() {
         return Arrays.<ReactPackage>asList(
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+            new LinearGradientPackage()
         );
     }
 

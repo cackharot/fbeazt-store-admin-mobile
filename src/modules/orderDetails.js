@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Image,
-    Linking,
+    ImageBackground,
     RefreshControl,
     ScrollView,
-    Text,
-    ToastAndroid,
     View
 } from 'react-native';
-// import LinearGradient from 'react-native-linear-gradient';
-import { Container, Segment, Button, Right, Left, Header, Title, Body, Content, Icon } from 'native-base';
+import LinearGradient from 'react-native-linear-gradient';
+import { Container, Text, Button, Right, Left, Body, Content, Icon } from 'native-base';
+import { Card, CardItem, Thumbnail } from 'native-base';
 import * as ordersListActions from '../actions/ordersListActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import styles from './styles/orders';
-
-import CardTwo from './components/cardTwo';
+import moment from 'moment';
+import { iconsMap } from '../appIcons';
 import ProgressBar from './components/progressBar';
 
 
@@ -63,26 +62,50 @@ class OrderDetailsComponent extends Component {
     render() {
         const iconStar = <Icon name="md-star" size={16} color="#F5B642" />;
         const { order } = this.props;
+        var orderDate, dateStr;
+        if (order && order.created_at) {
+            orderDate = moment(order.created_at.$date).utc();
+            dateStr = orderDate.local(true).fromNow();
+        }
 
         return (
             this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
                 <Container>
-                    <Content contentContainerStyle={{ flexBasis: '100%' }}>
-                        <ScrollView
-                            style={styles.container}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={this.state.isRefreshing}
-                                    onRefresh={this._onRefresh}
-                                    colors={['#EA0000']}
-                                    tintColor="white"
-                                    title="loading..."
-                                    titleColor="white"
-                                    progressBackgroundColor="white"
-                                />
-                            }>
-                            <Text>{order.order_no}</Text>
-                        </ScrollView>
+                    <Content padder={false}>
+                        <View>
+                            <View>
+                                <ImageBackground source={require('../images/detail_bg.jpg')} style={styles.imageBackdrop} >
+                                    <View style={styles.detailHeaderContainer}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                                            <Icon name='megaphone' style={styles.statusIcon} active />
+                                            <Text style={styles.orderno}>#{order.store_order_no.toUpperCase()}</Text>
+                                        </View>
+                                        <View style={{ paddingLeft: 38 }}>
+                                            <Text style={styles.orderitems}>{order.items.length} items</Text>
+                                            <Text style={styles.timeago}>{orderDate.format('DD/MM/YYYY LT')} ({dateStr})</Text>
+                                        </View>
+                                    </View>
+                                </ImageBackground>
+                                {/* <LinearGradient colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.2)', 'rgba(0,0,0, 0.7)']} style={styles.linearGradient} /> */}
+                            </View>
+                            <CardItem>
+                                <Left>
+                                    <Button transparent>
+                                        <Icon active name="thumbs-up" />
+                                        <Text>12 Likes</Text>
+                                    </Button>
+                                </Left>
+                                <Body>
+                                    <Button transparent>
+                                        <Icon active name="chatbubbles" />
+                                        <Text>4 Comments</Text>
+                                    </Button>
+                                </Body>
+                                <Right>
+                                    <Text>11h ago</Text>
+                                </Right>
+                            </CardItem>
+                        </View>
                     </Content>
                 </Container>
         );
