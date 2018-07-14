@@ -94,6 +94,19 @@ const styles = StyleSheet.create({
         fontSize: 13,
         paddingRight: 8,
     },
+    detailStatusActions: {
+        marginTop: 20,
+        paddingHorizontal: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    btnStatus: {
+        alignItems: 'center',
+    },
+    btnStatusText: {
+        fontSize: 14,
+        color: '#999'
+    },
     listHeading: {
         paddingHorizontal: 16,
         flexDirection: 'row',

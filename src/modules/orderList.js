@@ -91,11 +91,11 @@ class OrderListComponent extends Component {
       this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
         <Container>
           <Segment style={styles.statusSegment}>
-            <Button first>
+            <Button first active>
               <Icon name='megaphone' style={styles.segmentIcon} />
               <Text style={styles.segmentTitle}>Pending</Text>
             </Button>
-            <Button>
+            <Button active>
               <Icon name='time' style={styles.segmentIcon} />
               <Text style={styles.segmentTitle}>Cooking</Text>
             </Button>

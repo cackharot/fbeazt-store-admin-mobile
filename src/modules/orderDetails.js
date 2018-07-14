@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Container, Text, Button, Right, Left, Body, Content, Icon } from 'native-base';
-import { Badge, Card, CardItem, List, ListItem, Separator } from 'native-base';
+import { Badge, Card, CardItem, List, ListItem, Separator, Segment } from 'native-base';
 import * as ordersListActions from '../actions/ordersListActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -117,23 +117,24 @@ class OrderDetailsComponent extends Component {
                                 }>
                             </List>
                         </View>
-                        <CardItem>
-                            <Left>
-                                <Button transparent>
-                                    <Icon active name="thumbs-up" />
-                                    <Text>12 Likes</Text>
-                                </Button>
-                            </Left>
-                            <Body>
-                                <Button transparent>
-                                    <Icon active name="chatbubbles" />
-                                    <Text>4 Comments</Text>
-                                </Button>
-                            </Body>
-                            <Right>
-                                <Text>11h ago</Text>
-                            </Right>
-                        </CardItem>
+                        <Segment style={styles.detailStatusActions}>
+                            <View style={styles.btnStatus}>
+                                <Text style={styles.btnStatusText}>Received</Text>
+                                <Icon name='megaphone' style={styles.segmentIcon} />
+                            </View>
+                            <View style={styles.btnStatus}>
+                                <Text style={styles.btnStatusText}>Cooking</Text>
+                                <Icon name='time' style={styles.segmentIcon} />
+                            </View>
+                            <View style={styles.btnStatus}>
+                                <Text style={styles.btnStatusText}>Ready</Text>
+                                <Icon name='thumbs-up' style={styles.segmentIcon} />
+                            </View>
+                            <View style={styles.btnStatus}>
+                                <Text style={styles.btnStatusText}>Delivered</Text>
+                                <Icon name='checkmark-circle' style={styles.segmentIcon} />
+                            </View>
+                        </Segment>
                     </Content>
                 </Container>
         );
