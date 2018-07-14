@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Image,
     ImageBackground,
     RefreshControl,
     ScrollView,
@@ -9,7 +8,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Container, Text, Button, Right, Left, Body, Content, Icon } from 'native-base';
-import { Card, CardItem, Thumbnail } from 'native-base';
+import { Badge, Card, CardItem, List, ListItem, Separator } from 'native-base';
 import * as ordersListActions from '../actions/ordersListActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -73,9 +72,9 @@ class OrderDetailsComponent extends Component {
                 <Container>
                     <Content padder={false}>
                         <View>
-                            <View>
-                                <ImageBackground source={require('../images/detail_bg.jpg')} style={styles.imageBackdrop} >
-                                    <View style={styles.detailHeaderContainer}>
+                            <ImageBackground source={require('../images/detail_bg.jpg')} style={styles.imageBackdrop} >
+                                <View style={styles.detailHeaderContainer}>
+                                    <View>
                                         <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
                                             <Icon name='megaphone' style={styles.statusIcon} active />
                                             <Text style={styles.orderno}>#{order.store_order_no.toUpperCase()}</Text>
@@ -85,27 +84,56 @@ class OrderDetailsComponent extends Component {
                                             <Text style={styles.timeago}>{orderDate.format('DD/MM/YYYY LT')} ({dateStr})</Text>
                                         </View>
                                     </View>
-                                </ImageBackground>
-                                {/* <LinearGradient colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.2)', 'rgba(0,0,0, 0.7)']} style={styles.linearGradient} /> */}
-                            </View>
-                            <CardItem>
-                                <Left>
-                                    <Button transparent>
-                                        <Icon active name="thumbs-up" />
-                                        <Text>12 Likes</Text>
-                                    </Button>
-                                </Left>
-                                <Body>
-                                    <Button transparent>
-                                        <Icon active name="chatbubbles" />
-                                        <Text>4 Comments</Text>
-                                    </Button>
-                                </Body>
-                                <Right>
-                                    <Text>11h ago</Text>
-                                </Right>
-                            </CardItem>
+                                    <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
+                                        <Text style={styles.orderTotal}>₹{order.total}</Text>
+                                    </View>
+                                </View>
+                            </ImageBackground>
+                            {/* <LinearGradient colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.2)', 'rgba(0,0,0, 0.7)']} style={styles.linearGradient} /> */}
                         </View>
+                        <Separator>
+                            <Text>ITEMS</Text>
+                        </Separator>
+                        <View>
+                            <List noIndent dataArray={order.items}
+                                renderRow={(item) =>
+                                    <ListItem noIndent>
+                                        <Body>
+                                            <Text>{item.name}</Text>
+                                            {item.price_detail && item.price_detail.price > 0.0 && (
+                                                <Text>{item.price_detail.description}</Text>
+                                            )}
+                                        </Body>
+                                        <Right>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Text note>{item.price}x </Text>
+                                                <Badge primary>
+                                                    <Text>{item.quantity}</Text>
+                                                </Badge>
+                                            </View>
+                                            <Text>{item.total}</Text>
+                                        </Right>
+                                    </ListItem>
+                                }>
+                            </List>
+                        </View>
+                        <CardItem>
+                            <Left>
+                                <Button transparent>
+                                    <Icon active name="thumbs-up" />
+                                    <Text>12 Likes</Text>
+                                </Button>
+                            </Left>
+                            <Body>
+                                <Button transparent>
+                                    <Icon active name="chatbubbles" />
+                                    <Text>4 Comments</Text>
+                                </Button>
+                            </Body>
+                            <Right>
+                                <Text>11h ago</Text>
+                            </Right>
+                        </CardItem>
                     </Content>
                 </Container>
         );

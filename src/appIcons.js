@@ -15,6 +15,8 @@ const icons = {
     "ios-bowl--small": [14, "#4FCBC6"],
     "ios-bowl": [14, "#bbb"],
 
+    "ios-arrow-back": [30, "#999"],
+
     "ios-person": [30, "#bbb"],
     "ios-list": [30, "#bbb"],
     "ios-restaurant": [30, "#bbb"],

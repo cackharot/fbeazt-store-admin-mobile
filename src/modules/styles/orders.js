@@ -30,13 +30,17 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     detailHeaderContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
         paddingHorizontal: 18,
     },
     statusIcon: {
         color: 'white',
         fontSize: 33,
         fontWeight: '800',
-        marginRight: 10
+        marginRight: 10,
     },
     orderitems: {
         color: 'white',
@@ -60,6 +64,12 @@ const styles = StyleSheet.create({
                 fontSize: 15
             }
         })
+    },
+    orderTotal: {
+        paddingTop: 13,
+        color: 'white',
+        fontSize: 28,
+        fontWeight: '800'
     },
     progressBar: {
         backgroundColor: '#4B7AAC',

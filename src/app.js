@@ -35,6 +35,10 @@ function setDefaultNavOptions() {
         fontFamily: 'Helvetica',
         alignment: 'center'
       },
+      backButton: {
+        icon: iconsMap['iso-arrow-back'],
+        showTitle: false,
+      },
       background: {
         // color: '#4D4B88'
         color: 'white'
