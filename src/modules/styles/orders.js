@@ -81,31 +81,19 @@ const styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: '#8E8E8E'
     },
-    statusSegment: {
-        // backgroundColor: '#4D4B88',
-        backgroundColor: 'white',
-    },
     segmentIcon: {
         marginLeft: 0,
         marginRight: 0,
+        // color: '#0071ff',
         paddingHorizontal: 8,
     },
     segmentTitle: {
         fontSize: 13,
         paddingRight: 8,
     },
-    detailStatusActions: {
-        marginTop: 20,
-        paddingHorizontal: 20,
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    btnStatus: {
-        alignItems: 'center',
-    },
-    btnStatusText: {
-        fontSize: 14,
-        color: '#999'
+    statusSegment: {
+        backgroundColor: '#6566A0',
+        // backgroundColor: 'white',
     },
     listHeading: {
         paddingHorizontal: 16,

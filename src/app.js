@@ -15,6 +15,7 @@ function setDefaultNavOptions() {
   Navigation.setDefaultOptions({
     statusBar: {
       drawBehind: false,
+      backgroundColor: '#4D4B88',
       visible: true
     },
     layout: {
@@ -23,16 +24,19 @@ function setDefaultNavOptions() {
     },
     topBar: {
       visible: true,
-      drawBehind: true,
+      drawBehind: false,
       animate: false,
       searchBar: false,
-      // title: { color: 'white' },
-      title: { color: 'black' },
+      buttonColor: 'white',
+      title: {
+        fontSize: 16,
+        color: 'white',
+        elevation: 0,
+      },
       subtitle: {
         fontSize: 14,
-        // color: 'white',
-        color: 'black',
-        fontFamily: 'Helvetica',
+        color: 'white',
+        // fontFamily: 'Helvetica',
         alignment: 'center'
       },
       backButton: {
@@ -40,8 +44,8 @@ function setDefaultNavOptions() {
         showTitle: false,
       },
       background: {
-        // color: '#4D4B88'
-        color: 'white'
+        color: '#4D4B88'
+        // color: 'white'
       }
     },
     bottomTabs: {
@@ -67,7 +71,12 @@ function initNav() {
             stack: {
               children: [{
                 component: {
-                  name: 'app.orderList'
+                  name: 'app.orderList',
+                  options: {
+                    topBar: {
+                      title: { text: `Orders` }
+                    }
+                  }
                 },
               }],
               options: {
@@ -75,9 +84,6 @@ function initNav() {
                   text: 'Orders',
                   icon: iconsMap['ios-list'],
                 },
-                topBar: {
-                  title: { text: 'Order', color: 'black' }
-                }
               },
             },
           },

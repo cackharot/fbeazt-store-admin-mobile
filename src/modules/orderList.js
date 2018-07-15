@@ -114,7 +114,7 @@ class OrderListComponent extends Component {
           dataSource,
           isLoading: false
         });
-        // this._viewOrder(this.props.storeOrders.items[0]._id.$oid);
+        // this._viewOrder(this.props.storeOrders.items[2]._id.$oid);
       });
     if (isRefreshed && this.setState({ isRefreshing: false }));
   }
@@ -125,7 +125,7 @@ class OrderListComponent extends Component {
         <Root>
           <Container>
             <Segment style={styles.statusSegment}>
-              <Button first active>
+              <Button transparent first active>
                 <Icon name='megaphone' style={styles.segmentIcon} />
                 <Text style={styles.segmentTitle}>Pending</Text>
               </Button>
