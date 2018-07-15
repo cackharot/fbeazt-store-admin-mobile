@@ -13,6 +13,11 @@ export default function (state = initialState.storeOrders, action) {
                 ...state,
                 details: action.details
             };
+        case types.UPDATE_ORDER_STATUS:
+            return {
+                ...state,
+                updateOrderStatus: action.updateOrderStatus
+            };
         default:
             return state;
     }
