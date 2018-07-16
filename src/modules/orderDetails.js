@@ -21,7 +21,7 @@ import StatusTimeline from './components/statusTimeline';
 import ProgressBar from './components/progressBar';
 
 
-class OrderDetailsComponent extends Component {
+class OrderDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -163,7 +163,7 @@ class OrderDetailsComponent extends Component {
     }
 }
 
-OrderDetailsComponent.propTypes = {
+OrderDetails.propTypes = {
     storeOrderId: PropTypes.string.isRequired
 };
 
@@ -180,4 +180,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { "withRef": true })(OrderDetailsComponent);
+export default connect(mapStateToProps, mapDispatchToProps, null, { "withRef": true })(OrderDetails);

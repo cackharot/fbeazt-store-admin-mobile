@@ -88,15 +88,22 @@ function initNav() {
             },
           },
           {
-            component: {
-              name: 'app.orderList',
+            stack: {
+              children: [{
+                component: {
+                  name: 'app.productList',
+                  options: {
+                    topBar: {
+                      title: { text: `Menu` }
+                    }
+                  }
+                },
+              }],
               options: {
                 bottomTab: {
                   text: 'Menu',
-                  icon: iconsMap['ios-restaurant']
-                }
-              },
-              passProps: {
+                  icon: iconsMap['ios-restaurant'],
+                },
               },
             },
           },

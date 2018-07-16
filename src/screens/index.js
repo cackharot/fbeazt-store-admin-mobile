@@ -1,9 +1,11 @@
 const { Navigation } = require('react-native-navigation');
-import OrderListComponent from '../modules/orderList';
-import OrderDetailsComponent from '../modules/orderDetails';
+import OrderList from '../modules/orderList';
+import OrderDetails from '../modules/orderDetails';
+import ProductList from '../modules/productList';
 import reduxHOC from './reduxHOC';
 
 export function registerScreens(store) {
-  Navigation.registerComponent('app.orderList', () => reduxHOC(OrderListComponent, store));
-  Navigation.registerComponent('app.orderDetails', () => reduxHOC(OrderDetailsComponent, store));
+  Navigation.registerComponent('app.orderList', () => reduxHOC(OrderList, store));
+  Navigation.registerComponent('app.orderDetails', () => reduxHOC(OrderDetails, store));
+  Navigation.registerComponent('app.productList', () => reduxHOC(ProductList, store));
 }

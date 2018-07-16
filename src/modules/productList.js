@@ -10,19 +10,17 @@ import {
   ListView,
   Platform
 } from 'react-native';
-import { Root } from "native-base";
+import { Root, ListItem } from "native-base";
 import { Container, Segment, Button, Right, Left, Header, Title, Body, Toast, Content, Icon } from 'native-base';
-import * as ordersListActions from '../actions/ordersListActions';
+import * as productListActions from '../actions/productListActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import styles from './styles/orders';
+import styles from './styles/products';
 
-import OrderStatusFilter from './components/orderStatusFilter';
-import CardThree from './components/cardThree';
 import ProgressBar from './components/progressBar';
 
-class OrderList extends Component {
+class ProductList extends Component {
 
   constructor(props) {
     super(props);
@@ -31,25 +29,18 @@ class OrderList extends Component {
       isLoading: true,
       isRefreshing: false,
       showToast: false,
-      filter: {
-        PENDING: true,
-        PREPARING: true,
-        PROGRESS: true,
-        DELIVERED: false,
-        PAID: false,
-        CANCELLED: false,
-      }
+      filter_text: ""
     };
 
-    this._viewOrder = this._viewOrder.bind(this);
-    this._updateOrderStatus = this._updateOrderStatus.bind(this);
+    this._viewProduct = this._viewProduct.bind(this);
+    this._updateProductStatus = this._updateProductStatus.bind(this);
     this._showMessage = this._showMessage.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
 
   componentWillMount() {
-    this._retrieveOrders();
+    this._retrieveProducts();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,7 +64,7 @@ class OrderList extends Component {
     }
   }
 
-  _viewOrder(storeOrderId) {
+  _viewProduct(storeOrderId) {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'app.orderDetails',
@@ -91,7 +82,7 @@ class OrderList extends Component {
     });
   }
 
-  _updateOrderStatus(storeOrderId, currentStatus, nextStatus) {
+  _updateProductStatus(id, currentStatus, nextStatus) {
     if (currentStatus === nextStatus) {
       Toast.show({
         text: "Already updated!",
@@ -99,34 +90,34 @@ class OrderList extends Component {
         type: "warning"
       });
     } else {
-      console.log(`Updating order ${storeOrderId} status to ${nextStatus}`);
-      this.props.actions.updateOrderStatus(storeOrderId, nextStatus)
+      console.log(`Updating product ${id} status to ${nextStatus}`);
+      this.props.actions.updateProductStatus(id, nextStatus)
         .then(() => {
-          this._showMessage(nextStatus, this.props.updateOrderStatus);
-          this._retrieveOrders(true);
+          this._showMessage(nextStatus, this.props.updateProductStatus);
+          this._retrieveProducts(true);
         });
     }
   }
 
   _onRefresh() {
     this.setState({ isRefreshing: true });
-    this._retrieveOrders(true);
+    this._retrieveProducts(true);
   }
 
-  _onFilterChange(filter) {
-    this.setState({ isRefreshing: true, filter: filter }, () =>{
-      this._retrieveOrders(true);
+  _onFilterChange(filter_text) {
+    this.setState({ isRefreshing: true, filter_text: filter_text }, () => {
+      this._retrieveProducts(true);
     });
   }
 
-  _retrieveOrders(isRefreshed) {
-    const { filter } = this.state;
-    this.props.actions.retrieveOrders(filter)
+  _retrieveProducts(isRefreshed) {
+    const { filter_text } = this.state;
+    this.props.actions.retrieveProducts(filter_text)
       .then(() => {
         const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-        const dataSource = ds.cloneWithRows(this.props.storeOrders.items);
+        const dataSource = ds.cloneWithRows(this.props.products.items);
         this.setState({
-          list: this.props.storeOrders.items,
+          list: this.props.products.items,
           dataSource,
           isLoading: false
         });
@@ -140,7 +131,6 @@ class OrderList extends Component {
       this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
         <Root>
           <Container>
-            <OrderStatusFilter onChange={this._onFilterChange} />
             <Content contentContainerStyle={{ flexBasis: '100%' }}>
               <ListView
                 style={styles.container}
@@ -148,7 +138,24 @@ class OrderList extends Component {
                 // onEndReached={type => this._retrieveNextPage(this.props.type)}
                 onEndReachedThreshold={1200}
                 dataSource={this.state.dataSource}
-                renderRow={rowData => <CardThree order={rowData} viewOrder={this._viewOrder} updateOrderStatus={this._updateOrderStatus} />}
+                renderRow={item => (
+                  <ListItem noIndent key={item._id.$oid}>
+                    <Body>
+                      <Text>{item.name}</Text>
+                      <Text>{item.category}</Text>
+                      {
+                        item.price_table.map(x => {
+                          <Text key={x.no}>hello</Text>
+                        })
+                      }
+                    </Body>
+                    <Right>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text note>₹{item.sell_price}</Text>
+                      </View>
+                    </Right>
+                  </ListItem>
+                )}
                 renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.seperator} />}
                 renderFooter={() => <View style={{ height: 50 }}><ProgressBar /></View>}
                 refreshControl={
@@ -172,15 +179,15 @@ class OrderList extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    storeOrders: state.storeOrders.list,
-    updateOrderStatus: state.storeOrders.updateOrderStatus
+    products: state.products.list,
+    updateProductStatus: state.products.updateProductStatus
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(ordersListActions, dispatch)
+    actions: bindActionCreators(productListActions, dispatch)
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { "withRef": true })(OrderList);
+export default connect(mapStateToProps, mapDispatchToProps, null, { "withRef": true })(ProductList);
