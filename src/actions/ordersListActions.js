@@ -18,23 +18,28 @@ function retrieveOrderDetailsSuccess(res) {
     };
 }
 
-function updateOrderStatusSuccess(res){
+function updateOrderStatusSuccess(res) {
     return {
         type: types.UPDATE_ORDER_STATUS,
         updateOrderStatus: res.data
     };
 }
 
-function updateOrderStatusFailure(res){
+function updateOrderStatusFailure(res) {
     return {
         type: types.UPDATE_ORDER_STATUS,
         updateOrderStatus: res.data
     };
 }
 
-export function retrieveOrders() {
+export function retrieveOrders(orderStatus) {
     return function (dispatch) {
-        return axios.get(`${baseURL}/store_orders/5b307053ac02377970451b41`)
+        return axios.get(`${baseURL}/store_orders/5b307053ac02377970451b41`,
+            {
+                params: {
+                    order_status: Object.keys(orderStatus).filter(k => orderStatus[k]).join(",")
+                }
+            })
             .then(res => {
                 dispatch(retrieveOrdersSuccess(res));
             })

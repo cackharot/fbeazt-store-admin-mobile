@@ -70,7 +70,7 @@ class StatusTimeline extends Component {
             case 'PENDING':
                 content = (
                     <TouchableOpacity style={styles.btnStatus} activeOpacity={0.6}>
-                        <Text style={textStyle}>Received</Text>
+                        <Text style={textStyle}>{text}</Text>
                         <Icon name='megaphone' active={active} style={istyle} />
                         <Text style={textStyle}>{this._getTimeStr(order, 'PENDING')}</Text>
                     </TouchableOpacity>

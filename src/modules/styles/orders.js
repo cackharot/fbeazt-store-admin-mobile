@@ -81,20 +81,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         backgroundColor: '#8E8E8E'
     },
-    segmentIcon: {
-        marginLeft: 0,
-        marginRight: 0,
-        // color: '#0071ff',
-        paddingHorizontal: 8,
-    },
-    segmentTitle: {
-        fontSize: 13,
-        paddingRight: 8,
-    },
-    statusSegment: {
-        backgroundColor: '#6566A0',
-        // backgroundColor: 'white',
-    },
     listHeading: {
         paddingHorizontal: 16,
         flexDirection: 'row',

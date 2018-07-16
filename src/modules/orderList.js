@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 
 import styles from './styles/orders';
 
-import OrderStatusIcon from './components/orderStatusIcon';
+import OrderStatusFilter from './components/orderStatusFilter';
 import CardThree from './components/cardThree';
 import ProgressBar from './components/progressBar';
 
@@ -30,12 +30,21 @@ class OrderListComponent extends Component {
       list: [],
       isLoading: true,
       isRefreshing: false,
-      showToast: false
+      showToast: false,
+      filter: {
+        PENDING: true,
+        PREPARING: true,
+        PROGRESS: true,
+        DELIVERED: false,
+        PAID: false,
+        CANCELLED: false,
+      }
     };
 
     this._viewOrder = this._viewOrder.bind(this);
     this._updateOrderStatus = this._updateOrderStatus.bind(this);
     this._showMessage = this._showMessage.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
 
@@ -104,8 +113,15 @@ class OrderListComponent extends Component {
     this._retrieveOrders(true);
   }
 
+  _onFilterChange(filter) {
+    this.setState({ isRefreshing: true, filter: filter }, () =>{
+      this._retrieveOrders(true);
+    });
+  }
+
   _retrieveOrders(isRefreshed) {
-    this.props.actions.retrieveOrders()
+    const { filter } = this.state;
+    this.props.actions.retrieveOrders(filter)
       .then(() => {
         const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
         const dataSource = ds.cloneWithRows(this.props.storeOrders.items);
@@ -124,24 +140,7 @@ class OrderListComponent extends Component {
       this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
         <Root>
           <Container>
-            <Segment style={styles.statusSegment}>
-              <Button transparent first active>
-                <Icon name='megaphone' style={styles.segmentIcon} />
-                <Text style={styles.segmentTitle}>Pending</Text>
-              </Button>
-              <Button active>
-                <Icon name='time' style={styles.segmentIcon} />
-                <Text style={styles.segmentTitle}>Cooking</Text>
-              </Button>
-              <Button active={false}>
-                <Icon name='thumbs-up' style={styles.segmentIcon} />
-                <Text style={styles.segmentTitle}>Ready</Text>
-              </Button>
-              <Button last>
-                <Icon name='checkmark-circle' style={styles.segmentIcon} />
-                <Text style={styles.segmentTitle}>Delivered</Text>
-              </Button>
-            </Segment>
+            <OrderStatusFilter onChange={this._onFilterChange} />
             <Content contentContainerStyle={{ flexBasis: '100%' }}>
               <ListView
                 style={styles.container}
