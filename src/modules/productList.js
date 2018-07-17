@@ -49,7 +49,7 @@ class ProductList extends Component {
 
   _showMessage(nextStatus, response) {
     if (response.status === "error") {
-      console.log(`Update failed order status to ${nextStatus}`);
+      console.log(`Update failed product status to ${nextStatus}`);
       Toast.show({
         text: `Cannot update status to ${nextStatus}`,
         duration: 3000,
@@ -64,17 +64,17 @@ class ProductList extends Component {
     }
   }
 
-  _viewProduct(storeOrderId) {
+  _viewProduct(item) {
     Navigation.push(this.props.componentId, {
       component: {
-        name: 'app.orderDetails',
+        name: 'app.productDetails',
         passProps: {
-          storeOrderId
+          item
         },
         options: {
           topBar: {
             title: {
-              text: `Order Details`
+              text: `${item.name} Details`
             }
           }
         }
@@ -139,22 +139,30 @@ class ProductList extends Component {
                 onEndReachedThreshold={1200}
                 dataSource={this.state.dataSource}
                 renderRow={item => (
-                  <ListItem noIndent key={item._id.$oid}>
-                    <Body>
-                      <Text>{item.name}</Text>
-                      <Text>{item.category}</Text>
-                      {
-                        item.price_table.map(x => {
-                          <Text key={x.no}>hello</Text>
-                        })
-                      }
-                    </Body>
-                    <Right>
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text note>₹{item.sell_price}</Text>
+                  <TouchableOpacity key={item._id.$oid} activeOpacity={0.8} onPress={this._viewProduct.bind(this, item)}>
+                    <View style={styles.itemContainer}>
+                      <View style={styles.itemLeftContainer}>
+                        <Text style={styles.itemPrice}>₹{item.sell_price}</Text>
+                        <View>
+                          <Text style={styles.itemAvailability}>From</Text>
+                          <Text style={styles.itemAvailability}>
+                            {item.open_time.toString().trim()} to {item.close_time.toString().trim()}
+                          </Text>
+                        </View>
                       </View>
-                    </Right>
-                  </ListItem>
+                      <View style={styles.itemRightContainer}>
+                        <View>
+                          <Text style={styles.itemName}>{item.name}</Text>
+                          {item.price_table.length > 0 &&
+                            <Text note style={styles.itemVarieties}>{item.price_table.length} varieties</Text>
+                          }
+                        </View>
+                        <View>
+                          <Text note style={styles.itemCuisines}>{item.cuisines.join(",")}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                 )}
                 renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.seperator} />}
                 renderFooter={() => <View style={{ height: 50 }}><ProgressBar /></View>}

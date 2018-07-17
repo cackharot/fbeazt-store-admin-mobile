@@ -71,26 +71,6 @@ function initNav() {
             stack: {
               children: [{
                 component: {
-                  name: 'app.orderList',
-                  options: {
-                    topBar: {
-                      title: { text: `Orders` }
-                    }
-                  }
-                },
-              }],
-              options: {
-                bottomTab: {
-                  text: 'Orders',
-                  icon: iconsMap['ios-list'],
-                },
-              },
-            },
-          },
-          {
-            stack: {
-              children: [{
-                component: {
                   name: 'app.productList',
                   options: {
                     topBar: {
@@ -103,6 +83,26 @@ function initNav() {
                 bottomTab: {
                   text: 'Menu',
                   icon: iconsMap['ios-restaurant'],
+                },
+              },
+            },
+          },
+          {
+            stack: {
+              children: [{
+                component: {
+                  name: 'app.orderList',
+                  options: {
+                    topBar: {
+                      title: { text: `Orders` }
+                    }
+                  }
+                },
+              }],
+              options: {
+                bottomTab: {
+                  text: 'Orders',
+                  icon: iconsMap['ios-list'],
                 },
               },
             },

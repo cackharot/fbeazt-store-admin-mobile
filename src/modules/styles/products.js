@@ -3,15 +3,61 @@ import { Platform, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         paddingTop: 10,
-        // backgroundColor: '#6566A0',
+        backgroundColor: '#6566A0',
         ...Platform.select({
             ios: {
                 // paddingTop: 64
             }
         })
     },
-    orderDetailsContainer: {
-        backgroundColor: '#6566A0',
+    itemContainer: {
+        height: 90,
+        // width: 135,
+        backgroundColor: '#FDFDFD',
+        flexDirection: 'row',
+        // justifyContent: 'flex-start',
+        marginBottom: 8,
+        marginRight: 10,
+        marginLeft: 10,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        borderLeftColor: '#B86EC4',
+        borderLeftWidth: 5,
+        borderRadius: 5,
+    },
+    itemLeftContainer: {
+        width: 75,
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+    },
+    itemRightContainer: {
+        borderLeftWidth: 1,
+        borderLeftColor: '#CCC',
+        paddingLeft: 10,
+        alignItems: 'flex-start',
+        justifyContent: 'space-between'
+    },
+    itemPrice:{
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#595E63'
+    },
+    itemName: {
+        fontSize: 18,
+        fontWeight: '400',
+        color: '#595E63'
+    },
+    itemVarieties:{
+        fontSize: 14,
+        color: '#666'
+    },
+    itemCuisines:{
+        fontSize: 14,
+        color: '#aaa'
+    },
+    itemAvailability:{
+        fontSize: 13,
+        color: '#aaa'
     },
     linearGradient: {
         top: 0,
