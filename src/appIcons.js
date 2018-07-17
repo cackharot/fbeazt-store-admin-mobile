@@ -24,6 +24,7 @@ const icons = {
     "ios-settings": [30, "#bbb"],
     "ios-cog": [30, "#bbb"],
     "ios-stats": [30, "#bbb"],
+    "ios-notifications": [30, "#bbb"],
     "ios-megaphone": [30, "#fff"],
     "ios-person--big": [50, "#bbb"],
 

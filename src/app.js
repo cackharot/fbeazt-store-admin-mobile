@@ -102,7 +102,7 @@ function initNav() {
               options: {
                 bottomTab: {
                   text: 'Orders',
-                  icon: iconsMap['ios-list'],
+                  icon: iconsMap['ios-notifications'],
                 },
               },
             },

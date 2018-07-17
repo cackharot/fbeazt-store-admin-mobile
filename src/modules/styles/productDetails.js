@@ -10,54 +10,50 @@ const styles = StyleSheet.create({
             }
         })
     },
-    itemContainer: {
-        height: 90,
-        // width: 135,
-        backgroundColor: '#FDFDFD',
-        flexDirection: 'row',
-        // justifyContent: 'flex-start',
-        marginBottom: 8,
+    statusIcon: {
+        color: 'white',
+        fontSize: 33,
+        fontWeight: '800',
         marginRight: 10,
-        marginLeft: 10,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        borderLeftColor: '#B86EC4',
-        borderLeftWidth: 5,
-        borderRadius: 5,
     },
-    itemLeftContainer: {
-        width: 75,
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-    },
-    itemRightContainer: {
-        borderLeftWidth: 1,
-        borderLeftColor: '#CCC',
-        paddingLeft: 10,
-        alignItems: 'flex-start',
-        justifyContent: 'space-between'
-    },
-    itemPrice:{
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#595E63'
+    itemPrice: {
+        paddingTop: 13,
+        color: 'white',
+        fontSize: 28,
+        fontWeight: '800'
     },
     itemName: {
+        color: 'white',
+        fontSize: 28,
+        fontWeight: '900'
+    },
+    itemVarieties: {
+        fontSize: 22,
+        color: 'white',
+    },
+    itemCuisines: {
+        fontSize: 16,
+        paddingVertical: 10,
+        color: 'white',
+        fontWeight: '700',
+    },
+    itemAvailability: {
         fontSize: 18,
-        fontWeight: '400',
-        color: '#595E63'
-    },
-    itemVarieties:{
-        fontSize: 14,
-        color: '#666'
-    },
-    itemCuisines:{
-        fontSize: 14,
         color: '#aaa'
     },
-    itemAvailability:{
-        fontSize: 13,
-        color: '#aaa'
+    timeago: {
+        paddingVertical: 10,
+        color: 'white',
+        fontSize: 22,
+        fontWeight: '700',
+        ...Platform.select({
+            ios: {
+                fontSize: 14
+            },
+            android: {
+                fontSize: 15
+            }
+        })
     },
     linearGradient: {
         top: 0,
@@ -74,12 +70,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'flex-end',
         paddingBottom: 20
-    },
-    price: {
-        paddingTop: 13,
-        color: 'white',
-        fontSize: 28,
-        fontWeight: '800'
     },
     detailHeaderContainer: {
         flex: 1,

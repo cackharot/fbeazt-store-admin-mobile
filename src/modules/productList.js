@@ -64,17 +64,17 @@ class ProductList extends Component {
     }
   }
 
-  _viewProduct(item) {
+  _viewProduct(product) {
     Navigation.push(this.props.componentId, {
       component: {
         name: 'app.productDetails',
         passProps: {
-          item
+          product
         },
         options: {
           topBar: {
             title: {
-              text: `${item.name} Details`
+              text: `${product.name} Details`
             }
           }
         }
@@ -121,7 +121,7 @@ class ProductList extends Component {
           dataSource,
           isLoading: false
         });
-        // this._viewOrder(this.props.storeOrders.items[2]._id.$oid);
+        this._viewProduct(this.props.products.items[1]);
       });
     if (isRefreshed && this.setState({ isRefreshing: false }));
   }
