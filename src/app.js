@@ -2,8 +2,10 @@ import { Navigation } from 'react-native-navigation';
 import { iconsMap, iconsLoaded } from './appIcons';
 import { registerScreens } from './screens';
 import configureStore from './store/configureStore';
-
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 const store = configureStore();
+
+import { setDefaultNavOptions, showMainApp, showLogin } from './appNav';
 
 registerScreens(store);
 
@@ -11,137 +13,35 @@ iconsLoaded.then(() => {
   startApp();
 });
 
-function setDefaultNavOptions() {
-  Navigation.setDefaultOptions({
-    statusBar: {
-      drawBehind: false,
-      backgroundColor: '#4D4B88',
-      visible: true
-    },
-    layout: {
-      backgroundColor: '#4D4B88',
-      orientation: ['portrait', 'landscape'] // An array of supported orientations
-    },
-    topBar: {
-      visible: true,
-      drawBehind: false,
-      animate: false,
-      searchBar: false,
-      buttonColor: 'white',
-      title: {
-        fontSize: 16,
-        color: 'white',
-        elevation: 0,
-      },
-      subtitle: {
-        fontSize: 14,
-        color: 'white',
-        // fontFamily: 'Helvetica',
-        alignment: 'center'
-      },
-      backButton: {
-        icon: iconsMap['iso-arrow-back'],
-        showTitle: false,
-      },
-      background: {
-        color: '#4D4B88'
-        // color: 'white'
-      }
-    },
-    bottomTabs: {
-      titleDisplayMode: 'alwaysShow',
-      backgroundColor: '#4D4B88',
-      drawBehind: false
-    },
-    bottomTab: {
-      textColor: 'white',
-      iconColor: 'white',
-      selectedIconColor: '#4FCBC6',
-      selectedTextColor: '#4FCBC6',
-    }
-  });
-}
-
-function initNav() {
-  Navigation.setRoot({
-    root: {
-      bottomTabs: {
-        children: [
-          {
-            stack: {
-              children: [{
-                component: {
-                  name: 'app.productList',
-                  options: {
-                    topBar: {
-                      title: { text: `Menu` }
-                    }
-                  }
-                },
-              }],
-              options: {
-                bottomTab: {
-                  text: 'Menu',
-                  icon: iconsMap['ios-restaurant'],
-                },
-              },
-            },
-          },
-          {
-            stack: {
-              children: [{
-                component: {
-                  name: 'app.orderList',
-                  options: {
-                    topBar: {
-                      title: { text: `Orders` }
-                    }
-                  }
-                },
-              }],
-              options: {
-                bottomTab: {
-                  text: 'Orders',
-                  icon: iconsMap['ios-notifications'],
-                },
-              },
-            },
-          },
-          {
-            component: {
-              name: 'app.orderList',
-              options: {
-                bottomTab: {
-                  text: 'Reports',
-                  icon: iconsMap['ios-stats']
-                }
-              },
-              passProps: {
-              },
-            },
-          },
-          {
-            component: {
-              name: 'app.orderList',
-              options: {
-                bottomTab: {
-                  text: 'Settings',
-                  icon: iconsMap['ios-settings']
-                }
-              },
-              passProps: {
-              },
-            },
-          },
-        ],
-      },
-    }
-  });
+function setupGoogleSigin() {
+  GoogleSignin.hasPlayServices({ autoResolve: true })
+    .then(() => {
+      GoogleSignin.configure({
+        iosClientId: '280436316587-7nf2r3l2s0o2out6ootnqggfcr0p1j79.apps.googleusercontent.com', // only for iOS
+        webClientId: '280436316587-pc2v79112kdqu0jiruu56m92s8nr4s42.apps.googleusercontent.com',
+        offlineAccess: true
+      }).then(() => {
+        // start login screen on if user is available else main screen
+        GoogleSignin.currentUserAsync().then((user) => {
+          if (user && user.idToken) {
+            showMainApp();
+          } else {
+            showLogin();
+          }
+        }).catch((e) => {
+          console.error(e);
+          showLogin();
+        })
+      });
+    })
+    .catch(err => {
+      console.log('Play services error', err.code, err.message);
+    });
 }
 
 function startApp() {
   Navigation.events().registerAppLaunchedListener(() => {
     setDefaultNavOptions();
-    initNav();
+    setupGoogleSigin();
   });
 }

@@ -121,7 +121,7 @@ class ProductList extends Component {
           dataSource,
           isLoading: false
         });
-        this._viewProduct(this.props.products.items[1]);
+        // this._viewProduct(this.props.products.items[1]);
       });
     if (isRefreshed && this.setState({ isRefreshing: false }));
   }

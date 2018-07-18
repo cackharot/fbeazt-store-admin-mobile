@@ -42,6 +42,16 @@
 				<string>org.reactjs.native.example.foodbeaztStoreAdmin</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>280436316587-7nf2r3l2s0o2out6ootnqggfcr0p1j79.apps.googleusercontent.com</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>280436316587-7nf2r3l2s0o2out6ootnqggfcr0p1j79.apps.googleusercontent.com</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
