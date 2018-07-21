@@ -34,7 +34,7 @@ class StatusTimeline extends Component {
                 content = (
                     <TouchableOpacity style={styles.btnStatus} activeOpacity={0.6} onPress={onClick.bind(this, order._id.$oid, order.status, 'PREPARING')}>
                         <Text style={textStyle}>{text}</Text>
-                        <Icon name='time' active={active} style={istyle} />
+                        <Icon name='ios-time' active={active} style={istyle} />
                         <Text style={textStyle}>{this._getTimeStr(order, 'PREPARING')}</Text>
                     </TouchableOpacity>
                 );
@@ -43,7 +43,7 @@ class StatusTimeline extends Component {
                 content = (
                     <TouchableOpacity style={styles.btnStatus} activeOpacity={0.6} onPress={onClick.bind(this, order._id.$oid, order.status, 'PROGRESS')}>
                         <Text style={textStyle}>{text}</Text>
-                        <Icon name='thumbs-up' active={active} style={istyle} />
+                        <Icon name='ios-thumbs-up' active={active} style={istyle} />
                         <Text style={textStyle}>{this._getTimeStr(order, 'PROGRESS')}</Text>
                     </TouchableOpacity>
                 );
@@ -61,7 +61,7 @@ class StatusTimeline extends Component {
                 content = (
                     <TouchableOpacity style={styles.btnStatus} activeOpacity={0.6}>
                         <Text style={textStyle}>{text}</Text>
-                        <Icon name='cash' active={active} style={istyle} />
+                        <Icon name='ios-cash' active={active} style={istyle} />
                         <Text style={textStyle}>{this._getTimeStr(order, 'PAID')}</Text>
                     </TouchableOpacity>
                 );
@@ -71,7 +71,7 @@ class StatusTimeline extends Component {
                 content = (
                     <TouchableOpacity style={styles.btnStatus} activeOpacity={0.6}>
                         <Text style={textStyle}>{text}</Text>
-                        <Icon name='megaphone' active={active} style={istyle} />
+                        <Icon name='ios-megaphone' active={active} style={istyle} />
                         <Text style={textStyle}>{this._getTimeStr(order, 'PENDING')}</Text>
                     </TouchableOpacity>
                 );

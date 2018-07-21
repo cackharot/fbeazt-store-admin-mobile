@@ -15,20 +15,20 @@ class OrderStatusIcon extends Component {
         var content = null;
         switch (status) {
             case 'PREPARING':
-                content = (<Icon name='time' active={active} style={istyle} />);
+                content = (<Icon name='ios-time' active={active} style={istyle} />);
                 break;
             case 'PROGRESS':
-                content = (<Icon name='thumbs-up' active={active} style={istyle} />);
+                content = (<Icon name='ios-thumbs-up' active={active} style={istyle} />);
                 break;
             case 'DELIVERED':
                 content = (<Icon name='checkmark-circle' active={active} style={istyle} />);
                 break;
             case 'PAID':
-                content = (<Icon name='cash' active={active} style={istyle} />);
+                content = (<Icon name='ios-cash' active={active} style={istyle} />);
                 break;
             default:
             case 'PENDING':
-                content = (<Icon name='megaphone' active={active} style={istyle} />);
+                content = (<Icon name='ios-megaphone' active={active} style={istyle} />);
                 break;
         }
         // if(active){

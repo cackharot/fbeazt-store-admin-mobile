@@ -42,7 +42,7 @@ class OrderStatusFilter extends Component {
             case 'PREPARING':
                 content = (
                     <Button transparent active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='time' active={active} style={istyle} />
+                        <Icon name='ios-time' active={active} style={istyle} />
                         <Text style={textStyle}>{text}</Text>
                     </Button>
                 );
@@ -50,7 +50,7 @@ class OrderStatusFilter extends Component {
             case 'PROGRESS':
                 content = (
                     <Button transparent active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='thumbs-up' active={active} style={istyle} />
+                        <Icon name='ios-thumbs-up' active={active} style={istyle} />
                         <Text style={textStyle}>{text}</Text>
                     </Button>
                 );
@@ -66,7 +66,7 @@ class OrderStatusFilter extends Component {
             case 'PAID':
                 content = (
                     <Button transparent last active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='cash' active={active} style={istyle} />
+                        <Icon name='ios-cash' active={active} style={istyle} />
                         <Text style={textStyle}>{text}</Text>
                     </Button>
                 );
@@ -75,7 +75,7 @@ class OrderStatusFilter extends Component {
             case 'PENDING':
                 content = (
                     <Button transparent first active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='megaphone' active={active} style={istyle} />
+                        <Icon name='ios-megaphone' active={active} style={istyle} />
                         <Text style={textStyle}>{text}</Text>
                     </Button>
                 );
