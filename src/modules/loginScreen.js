@@ -13,6 +13,7 @@ import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import { Container, Text, Button, Right, Left, Body, Content, Icon } from 'native-base';
 import { showMainApp } from '../appNav';
 import { httpClient } from '../actions/httpClient';
+import { setupNotification } from '../pushNotification';
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -29,12 +30,15 @@ class LoginScreen extends Component {
         try {
             const user = await GoogleSignin.signIn();
             this.setState({ user });
-            if (user && user.name) {
+            if (user && user.name && user.idToken) {
                 console.log(`Got signed in user ${user.name}`);
                 storage.save({key: 'loginState', data: user});
                 storage.save({key: 'idToken', data: user.idToken});
                 httpClient.defaults.headers.common['Authorization'] = `Bearer ${user.idToken}`;
+                setupNotification(user.email);
                 showMainApp();
+            }else{
+                this.setState({error: `Invalid login ${user.accessToken}`});
             }
         } catch (error) {
             if (error.code === 'CANCELED') {
@@ -48,20 +52,23 @@ class LoginScreen extends Component {
     };
 
     render() {
-        const { user } = this.state;
+        const { user, error } = this.state;
         return (
             <Container>
                 <Content contentContainerStyle={{ flexBasis: '100%' }}>
                 <ImageBackground source={require('../images/login_bg.jpg')} style={styles.imageBackdrop} >
                     <LinearGradient colors={['rgba(80,80,135, 0.9)', 'rgba(80,80,130, 0.8)', 'rgba(80,80,140, 0.7)']} style={styles.linearGradient} />
                     <View style={styles.loginContainer}>
-                    <Icon name="pluse" ios="ios-pulse" style={styles.logo} />
+                    <Icon name="pluse" ios="ios-pulse" android="ios-pulse" style={styles.logo} />
                     <Text style={styles.title}>Foodbeazt</Text>
                     <Text style={styles.desc}>Store administrator App</Text>
-                <Button style={styles.loginBtn} onPressOut={this._signIn}>
-                <Icon name="logo-googleplus" style={styles.gplus}/>
-                <Text style={styles.btnText}>Sign In with Google</Text>
-                </Button>
+                    <Button style={styles.loginBtn} onPressOut={this._signIn}>
+                        <Icon name="logo-googleplus" android="logo-googleplus" style={styles.gplus}/>
+                        <Text style={styles.btnText}>Sign In with Google</Text>
+                    </Button>
+                    { error && error.length > 0 &&
+                        <Text note>{error}</Text>
+                    }
                     </View>
                 </ImageBackground>
                 </Content>

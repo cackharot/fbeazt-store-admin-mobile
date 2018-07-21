@@ -15,6 +15,7 @@
     "react-native-google-signin": "^0.12.0",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-navigation": "^2.0.2404",
+    "react-native-push-notification": "^3.0.2",
     "react-native-storage": "^0.2.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
