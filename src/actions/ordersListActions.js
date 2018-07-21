@@ -1,8 +1,5 @@
-import axios from 'axios';
 import * as types from '../constants/actionTypes';
-import { Platform } from 'react-native';
-
-const baseURL = Platform.OS === 'ios' ? 'http://localhost:4000/api' : 'http://10.0.3.2:4000/api'
+import { httpClient } from './httpClient';
 
 function retrieveOrdersSuccess(res) {
     return {
@@ -34,7 +31,7 @@ function updateOrderStatusFailure(res) {
 
 export function retrieveOrders(orderStatus) {
     return function (dispatch) {
-        return axios.get(`${baseURL}/store_orders/5b307053ac02377970451b41`,
+        return httpClient.get(`/store_orders/5b307053ac02377970451b41`,
             {
                 params: {
                     order_status: Object.keys(orderStatus).filter(k => orderStatus[k]).join(",")
@@ -51,7 +48,7 @@ export function retrieveOrders(orderStatus) {
 
 export function retrieveOrderDetails(storeOrderId) {
     return function (dispatch) {
-        return axios.get(`${baseURL}/store_orders/5b307053ac02377970451b41?store_order_id=${storeOrderId}`)
+        return httpClient.get(`/store_orders/5b307053ac02377970451b41?store_order_id=${storeOrderId}`)
             .then(res => {
                 dispatch(retrieveOrderDetailsSuccess(res));
             })
@@ -68,8 +65,8 @@ export function updateOrderStatus(storeOrderId, status) {
             store_order_id: storeOrderId,
             status: status,
             notes: ''
-        }
-        return axios.post(`${baseURL}/store_order_status`, payload)
+        };
+        return httpClient.post(`/store_order_status`, payload)
             .then(res => {
                 dispatch(updateOrderStatusSuccess(res));
             })
