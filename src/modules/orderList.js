@@ -124,9 +124,9 @@ class OrderList extends Component {
     this.props.actions.retrieveOrders(filter)
       .then(() => {
         const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-        const dataSource = ds.cloneWithRows(this.props.storeOrders.items);
+        const dataSource = ds.cloneWithRows(this.props.storeOrders.items || []);
         this.setState({
-          list: this.props.storeOrders.items,
+          list: this.props.storeOrders.items || [],
           dataSource,
           isLoading: false
         });

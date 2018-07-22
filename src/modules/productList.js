@@ -115,9 +115,9 @@ class ProductList extends Component {
     this.props.actions.retrieveProducts(filter_text)
       .then(() => {
         const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-        const dataSource = ds.cloneWithRows(this.props.products.items);
+        const dataSource = ds.cloneWithRows(this.props.products.items || []);
         this.setState({
-          list: this.props.products.items,
+          list: this.props.products.items || [],
           dataSource,
           isLoading: false
         });
