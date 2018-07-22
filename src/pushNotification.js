@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import Config from './appConfig';
 import { PushNotificationService } from './services/pushNotificationService';
+const { Navigation } = require('react-native-navigation');
 
 registerDevice = (email, tokenData, prevTokenData) => {
     const token = tokenData['token'];
@@ -29,14 +30,13 @@ showLoginSuccess = (pn) => {
 
 showLocalNotification = (pn, notification) => {
     pn.localNotification(Object.assign({
-        id: 0,
         autoCancel: true,
         default: true,
         largeIcon: "ic_launcher",
         smallIcon: "ic_notification",
         bigText: notification.message,
         vibrate: true,
-        vibration: 300,
+        vibration: 200,
         playSound: true,
         number: 1,
         collapse_key: null
@@ -46,10 +46,29 @@ showLocalNotification = (pn, notification) => {
 tryNavigateOnNotification = (notification) => {
     console.log('**********Navigating*********', notification.store_order_no, notification.store_order_id);
     if (notification.store_order_id && notification.store_order_id.length > 0) {
-        const { store_order_no, store_order_id } = notification;
-        let name = '#' + store_order_no + ' Details';
-        // Actions.orderDetails({ title: name, store_order_id: store_order_id });
+        const { store_order_id } = notification;
+        viewOrder(store_order_id);
+    }else{
+        console.log('Invalid store order id passed. Navigation failed!!');
     }
+}
+
+viewOrder = (storeOrderId) => {
+    Navigation.push("orderListComponent", {
+        component: {
+            name: 'app.orderDetails',
+            passProps: {
+                storeOrderId
+            },
+            options: {
+                topBar: {
+                    title: {
+                        text: `Order Details`
+                    }
+                }
+            }
+        }
+    });
 }
 
 _configurePushNotification = async (email) => {
@@ -73,11 +92,10 @@ _configurePushNotification = async (email) => {
         onNotification: function (notification) {
             console.log('RECEIVED NOTIFICATION:', notification);
             if (notification.foreground === true && notification.userInteraction === false && notification['google.message_id']) {
-                // that._showLocalNotification(notification);
                 showLocalNotification(PushNotification, notification);
             }
             if (notification.userInteraction === true) {
-                // that._tryNavigateOnNotification(notification);
+                tryNavigateOnNotification(notification);
             }
         },
         // ANDROID ONLY: (optional) GCM Sender ID.

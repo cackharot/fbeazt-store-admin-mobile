@@ -1,15 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.foodbeaztstoreadmin">
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
       android:name=".MainApplication"
@@ -51,11 +51,18 @@
               <!-- <Only if you're using GCM> -->
               <action android:name="com.google.android.c2dm.intent.RECEIVE" />
               <!-- </Only if you're using GCM> -->
-
-              <!-- <Else> -->
-              <action android:name="com.google.firebase.MESSAGING_EVENT" />
-              <!-- </Else> -->
           </intent-filter>
+      </service>
+      <service android:name="com.evollu.react.fcm.MessagingService">
+        <intent-filter>
+          <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+        </intent-filter>
+      </service>
+
+      <service android:name="com.evollu.react.fcm.InstanceIdService" android:exported="false">
+        <intent-filter>
+          <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+        </intent-filter>
       </service>
     </application>
 

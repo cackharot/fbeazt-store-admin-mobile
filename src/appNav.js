@@ -47,7 +47,7 @@ export function setDefaultNavOptions() {
       textColor: 'white',
       iconColor: 'white',
       selectedIconColor: '#4FCBC6',
-      selectedTextColor: '#4FCBC6',
+      selectedTextColor: '#4FCBC6'
     }
   });
 }
@@ -68,45 +68,47 @@ export function showMainApp() {
     root: {
       bottomTabs: {
         children: [
-          {
-            stack: {
-              children: [{
-                component: {
-                  name: 'app.productList',
-                  options: {
-                    topBar: {
-                      title: { text: `Menu` }
+            {
+                stack: {
+                    children: [{
+                        component: {
+                            id: 'orderListComponent',
+                            name: 'app.orderList',
+                            options: {
+                                topBar: {
+                                    title: { text: `Orders` }
+                                }
+                            }
+                        }
+                    }],
+                    options: {
+                        bottomTab: {
+                            text: 'Orders',
+                            icon: iconsMap['ios-notifications']
+                        }
                     }
-                  }
-                },
-              }],
-              options: {
-                bottomTab: {
-                  text: 'Menu',
-                  icon: iconsMap['ios-restaurant'],
-                },
-              },
+                }
             },
-          },
-          {
-            stack: {
-              children: [{
-                component: {
-                  name: 'app.orderList',
-                  options: {
-                    topBar: {
-                      title: { text: `Orders` }
+            {
+                stack: {
+                    children: [{
+                        component: {
+                            id: 'productListComponent',
+                            name: 'app.productList',
+                            options: {
+                                topBar: {
+                                    title: { text: `Menu` }
+                                }
+                            }
+                        }
+                    }],
+                    options: {
+                        bottomTab: {
+                            text: 'Menu',
+                            icon: iconsMap['ios-restaurant']
+                        }
                     }
-                  }
-                },
-              }],
-              options: {
-                bottomTab: {
-                  text: 'Orders',
-                  icon: iconsMap['ios-notifications'],
-                },
-              },
-            },
+                }
           },
           {
             component: {
