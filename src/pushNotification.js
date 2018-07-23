@@ -29,7 +29,9 @@ showLoginSuccess = (pn) => {
 }
 
 showLocalNotification = (pn, notification) => {
-    pn.localNotification(Object.assign({
+    pn.localNotification({
+        title: notification.title,
+        message: notification.message,
         autoCancel: true,
         default: true,
         largeIcon: "ic_launcher",
@@ -38,9 +40,7 @@ showLocalNotification = (pn, notification) => {
         vibrate: true,
         vibration: 200,
         playSound: true,
-        number: 1,
-        collapse_key: null
-    }, notification));
+    });
 }
 
 tryNavigateOnNotification = (notification) => {

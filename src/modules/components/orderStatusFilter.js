@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Platform, TouchableOpacity, StyleSheet, View, ShadowPropTypesIOS } from 'react-native';
@@ -98,17 +97,23 @@ class OrderStatusFilter extends Component {
 }
 
 OrderStatusFilter.propTypes = {
-    // order: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
-    segmentIcon: {
-        marginLeft: 0,
-        marginRight: 0,
-        color: 'white',
-        paddingHorizontal: 6,
-    },
+    segmentIcon: Platform.select({
+        ios: {
+            marginLeft: 0,
+            marginRight: 0,
+            color: 'white',
+            paddingHorizontal: 6,
+        },
+        android: {
+            marginLeft: 0,
+            marginRight: 0,
+            paddingHorizontal: 3
+        }
+    }),
     btnStatus: {
         // flex: 1,
         // alignItems: 'center',
@@ -117,11 +122,19 @@ const styles = StyleSheet.create({
         fontSize: 13,
         paddingRight: 8,
         paddingLeft: 8,
-        color: 'white'
+        ...Platform.select({
+            ios: {
+                color: 'white'
+            },
+            android:{
+                fontSize: 11
+            }
+        })
     },
     statusSegment: {
-        backgroundColor: '#6566A0'
-    },
+        backgroundColor: '#6566A0',
+        padding: 0
+    }
 });
 
 export default OrderStatusFilter;

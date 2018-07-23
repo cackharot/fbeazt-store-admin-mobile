@@ -26,10 +26,8 @@ class OrderDetails extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            isRefreshing: false,
             order: {}
         };
-        this._onRefresh = this._onRefresh.bind(this);
         this._updateOrderStatus = this._updateOrderStatus.bind(this);
         this._showMessage = this._showMessage.bind(this);
     }
@@ -42,37 +40,30 @@ class OrderDetails extends Component {
         if (nextProps.order) this.setState({ isLoading: false });
     }
 
-    _retrieveDetails(isRefreshed) {
-        this.props.actions.retrieveOrderDetails(this.props.storeOrderId)
-            .then(() => {
-            });
-        if (isRefreshed && this.setState({ isRefreshing: false }));
-    }
-
-    _onRefresh() {
-        this.setState({ isRefreshing: true });
-        this._retrieveDetails(true);
-    }
-
-    _onNavigatorEvent(event) {
-        if (event.type === 'NavBarButtonPress') {
-            if (event.id === 'close') {
-                this.props.navigator.dismissModal();
-            }
-        }
+    _retrieveDetails() {
+        this.props.actions.retrieveOrderDetails(this.props.storeOrderId);
     }
 
     _showMessage(nextStatus, response) {
+        const displayNames = {
+            PENDING: 'Received',
+            PREPARING: 'Cooking',
+            PROGRESS: 'Ready',
+            DELIVERED: 'Delivered',
+            PAID: 'Paid',
+            CANCELLED: 'Cancelled'
+        };
+        const statusName = displayNames[nextStatus] || nextStatus;
         if (response.status === "error") {
-            console.log(`Update failed order status to ${nextStatus}`);
+            console.log(`Update failed order status to ${statusName}`);
             Toast.show({
-                text: `Cannot update status to ${nextStatus}`,
+                text: `Cannot update status to ${statusName}`,
                 duration: 3000,
                 type: "danger"
             });
         } else {
             Toast.show({
-                text: `Updated status to ${nextStatus}`,
+                text: `Updated status to ${statusName}`,
                 duration: 3000,
                 type: "success"
             });
@@ -83,21 +74,19 @@ class OrderDetails extends Component {
         if (currentStatus === nextStatus) {
             Toast.show({
                 text: "Already updated!",
-                buttonText: "Okay",
                 type: "warning"
             });
         } else {
             console.log(`Updating order ${storeOrderId} status to ${nextStatus}`);
             this.props.actions.updateOrderStatus(storeOrderId, nextStatus)
                 .then(() => {
-                    this._showMessage(nextStatus, this.props.updateOrderStatus);
+                    this._showMessage(nextStatus, this.props.updateStatusResponse);
                     this._retrieveDetails(true);
                 });
         }
     }
 
     render() {
-        const iconStar = <Icon name="md-star" size={16} color="#F5B642" />;
         const { order } = this.props;
         var orderDate, dateStr;
         if (order && order.created_at) {
@@ -170,7 +159,7 @@ OrderDetails.propTypes = {
 function mapStateToProps(state, ownProps) {
     return {
         order: state.storeOrders.details,
-        updateOrderStatus: state.storeOrders.updateOrderStatus
+        updateStatusResponse: state.storeOrders.updateOrderStatus
     };
 }
 

@@ -53,17 +53,6 @@
               <!-- </Only if you're using GCM> -->
           </intent-filter>
       </service>
-      <service android:name="com.evollu.react.fcm.MessagingService">
-        <intent-filter>
-          <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-        </intent-filter>
-      </service>
-
-      <service android:name="com.evollu.react.fcm.InstanceIdService" android:exported="false">
-        <intent-filter>
-          <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-        </intent-filter>
-      </service>
     </application>
 
 </manifest>

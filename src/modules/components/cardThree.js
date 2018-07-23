@@ -17,7 +17,6 @@ class CardThree extends Component {
 
     constructor(props) {
         super(props);
-        this._getNextStatus = this._getNextStatus.bind(this);
     }
 
     _getNextStatus(current) {
@@ -25,7 +24,7 @@ class CardThree extends Component {
             case 'PREPARING':
                 return 'PROGRESS';
             case 'PROGRESS':
-                return 'PROGRESS'
+                return 'PROGRESS';
             case 'DELIVERED':
                 return 'DELIVERED';
             case 'PAID':
@@ -53,7 +52,6 @@ class CardThree extends Component {
                         <View style={styles.content}>
                             <Text style={styles.dateStr}>{orderDate.format('DD/MM/YY LT')}</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                {/* <Icon ios='ios-cart' name='cart' style={styles.cartIcon} /> */}
                                 <Text style={styles.tw}>
                                     {order.items.length} items and {this._getQuantity(order)} quantity
                                 </Text>
@@ -63,11 +61,6 @@ class CardThree extends Component {
                     <View style={styles.rightContent}>
                         <Text style={styles.total}>₹{order.total}</Text>
                         <Text style={styles.listHeadingRight}>{order.store_order_no}</Text>
-                        {nextStatus !== order.status &&
-                        <TouchableOpacity activeOpacity={0.6} onPress={updateOrderStatus.bind(this, order._id.$oid, order.status, nextStatus)}>
-                            <OrderStatusIcon status={nextStatus} asButton={true} iconStyle={styles.buttonIcon}/>
-                        </TouchableOpacity>
-                        }
                     </View>
                 </View>
             </TouchableOpacity>
@@ -75,9 +68,15 @@ class CardThree extends Component {
     }
 
     _getQuantity(order) {
-        return order.items.map(x => x.quantity).reduce((a, b) => a + b)
+        return order.items.map(x => x.quantity).reduce((a, b) => a + b);
     }
 }
+
+// {nextStatus !== order.status &&
+// <TouchableOpacity activeOpacity={0.6} onPress={updateOrderStatus.bind(this, order._id.$oid, order.status, nextStatus)}>
+//     <OrderStatusIcon status={nextStatus} asButton={true} iconStyle={styles.buttonIcon}/>
+// </TouchableOpacity>
+// }
 
 CardThree.propTypes = {
     order: PropTypes.object.isRequired,
@@ -156,8 +155,6 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         fontWeight: '300',
         color: 'white'
-    },
-    content: {
     },
     tw: {
         color: 'white',

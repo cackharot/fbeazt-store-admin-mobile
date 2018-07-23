@@ -37,7 +37,7 @@ class OrderList extends Component {
         PROGRESS: true,
         DELIVERED: false,
         PAID: false,
-        CANCELLED: false,
+        CANCELLED: false
       }
     };
 
@@ -126,14 +126,19 @@ class OrderList extends Component {
         const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
         const dataSource = ds.cloneWithRows(this.props.storeOrders.items || []);
         this.setState({
-          list: this.props.storeOrders.items || [],
-          dataSource,
-          isLoading: false
+            list: this.props.storeOrders,
+            dataSource,
+            isLoading: false
         });
         // this._viewOrder(this.props.storeOrders.items[2]._id.$oid);
       });
-    if (isRefreshed && this.setState({ isRefreshing: false }));
+      if (isRefreshed) {
+          this.setState({ isRefreshing: false });
+      }
   }
+
+    _retrieveNextPage() {
+    }
 
   render() {
     return (
@@ -145,7 +150,7 @@ class OrderList extends Component {
               <ListView
                 style={styles.container}
                 enableEmptySections
-                // onEndReached={type => this._retrieveNextPage(this.props.type)}
+                onEndReached={type => this._retrieveNextPage()}
                 onEndReachedThreshold={1200}
                 dataSource={this.state.dataSource}
                 renderRow={rowData => <CardThree order={rowData} viewOrder={this._viewOrder} updateOrderStatus={this._updateOrderStatus} />}

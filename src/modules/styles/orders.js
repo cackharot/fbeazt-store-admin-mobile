@@ -49,7 +49,12 @@ const styles = StyleSheet.create({
     orderno: {
         color: 'white',
         fontSize: 28,
-        fontWeight: '900'
+        fontWeight: '900',
+        ...Platform.select({
+            android: {
+                fontSize: 26
+            }
+        })
     },
     timeago: {
         paddingVertical: 10,
@@ -66,10 +71,15 @@ const styles = StyleSheet.create({
         })
     },
     orderTotal: {
-        paddingTop: 13,
+        paddingTop: 10,
         color: 'white',
         fontSize: 28,
-        fontWeight: '800'
+        fontWeight: '800',
+        ...Platform.select({
+            android: {
+                fontSize: 26
+            }
+        })
     },
     progressBar: {
         backgroundColor: '#4B7AAC',
