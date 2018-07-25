@@ -6,5 +6,8 @@ export default {
     products: {
         list: {},
         details: {}
+    },
+    reports: {
+        list: {}
     }
 };

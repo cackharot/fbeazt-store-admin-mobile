@@ -112,7 +112,7 @@ export function showMainApp() {
           },
           {
             component: {
-              name: 'app.orderList',
+              name: 'app.ReportScreen',
               options: {
                 bottomTab: {
                   text: 'Reports',
