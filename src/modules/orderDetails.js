@@ -86,6 +86,14 @@ class OrderDetails extends Component {
         }
     }
 
+    statusTimings(order, status) {
+        if(order.status_timings && order.status_timings[status]) {
+            const d = moment(order.status_timings[status].$date).utc();
+            return d.local(true).fromNow();
+        }
+        return 'NA';
+    }
+
     render() {
         const { order } = this.props;
         var orderDate, dateStr;
@@ -145,6 +153,18 @@ class OrderDetails extends Component {
                                 </List>
                             </View>
                             <StatusTimeline order={order} onClick={this._updateOrderStatus} />
+                            {order.status === 'PAID' && (
+                            <View style={styles.statusNote}>
+                                <Text note>PAID successfully by Foodbeazt at {this.statusTimings(order, 'PAID')}</Text>
+                            </View>
+                            )}
+                            {order.status === 'CANCELLED' && (
+                            <View style={styles.statusNote}>
+                                <Text note>
+                                    CANCELLED by Foodbeazt at {this.statusTimings(order, 'PAID')}
+                                </Text>
+                            </View>
+                            )}
                         </Content>
                     </Container>
                 </Root>

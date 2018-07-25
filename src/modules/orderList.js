@@ -50,14 +50,14 @@ class OrderList extends Component {
 
     componentWillMount() {
         this._retrieveOrders();
-        timer.setTimeout(this, 'loadOrders', () => {
+        timer.setInterval(this, 'loadOrders', () => {
             console.log(`Fetching orders from timer ${Config.REFRESH_INTERVAL}`);
             this._retrieveOrders();
         }, parseInt(Config.REFRESH_INTERVAL) * 60 * 1000);
     }
 
     componentWillUnmount() {
-        timer.clearTimeout(this);
+        timer.clearInterval(this);
     }
 
     componentWillReceiveProps(nextProps) {

@@ -81,6 +81,13 @@ const styles = StyleSheet.create({
             }
         })
     },
+    statusNote: {
+        marginTop: 15,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderTopWidth: 1,
+        borderColor: '#eee'
+    },
     progressBar: {
         backgroundColor: '#4B7AAC',
         flex: 1,
