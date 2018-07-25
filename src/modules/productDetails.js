@@ -88,9 +88,11 @@ class ProductDetails extends Component {
                       <Text note style={styles.itemCuisines}>{product.cuisines.join(",")}</Text>
                     </View>
                   </View>
+            {product.price_table.length ===0 && (
                   <View style={{ flexDirection: 'column', alignSelf: 'flex-end' }}>
                     <Text style={styles.itemPrice}>₹{parseFloat(product.sell_price).toFixed(2)}</Text>
-                  </View>
+                    </View>
+            )}
                 </View>
               </ImageBackground>
               {/* <LinearGradient colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.2)', 'rgba(0,0,0, 0.7)']} style={styles.linearGradient} /> */}

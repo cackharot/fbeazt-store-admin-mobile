@@ -25,16 +25,14 @@ const styles = StyleSheet.create({
         width: null,
         flex: 1,
         flexDirection: 'column',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingBottom: 20
+        paddingBottom: 10
     },
     detailHeaderContainer: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        paddingHorizontal: 18,
+        alignItems: 'flex-start',
     },
     statusIcon: {
         color: 'white',
@@ -71,7 +69,6 @@ const styles = StyleSheet.create({
         })
     },
     orderTotal: {
-        paddingTop: 10,
         color: 'white',
         fontSize: 28,
         fontWeight: '800',

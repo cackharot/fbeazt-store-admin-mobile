@@ -19,12 +19,12 @@ const styles = StyleSheet.create({
     itemPrice: {
         paddingTop: 13,
         color: 'white',
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: '800'
     },
     itemName: {
         color: 'white',
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: '900'
     },
     itemVarieties: {

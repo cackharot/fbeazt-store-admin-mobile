@@ -126,7 +126,7 @@ class OrderDetails extends Component {
                                                 <Text style={styles.timeago}>{orderDate.format('DD/MM/YYYY LT')} ({dateStr})</Text>
                                             </View>
                                         </View>
-                                        <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
+                <View style={{ alignSelf: 'flex-start' }}>
                                             <Text style={styles.orderTotal}>₹{order.total}</Text>
                                         </View>
                                     </View>

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FDFDFD',
         flexDirection: 'row',
         // justifyContent: 'flex-start',
-        marginBottom: 8,
+        marginTop: 8,
         marginRight: 10,
         marginLeft: 10,
         paddingHorizontal: 16,
