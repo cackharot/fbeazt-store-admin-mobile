@@ -33,35 +33,19 @@ class ProductList extends Component {
     };
 
     this._viewProduct = this._viewProduct.bind(this);
-    this._updateProductStatus = this._updateProductStatus.bind(this);
-    this._showMessage = this._showMessage.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
   }
 
-  componentWillMount() {
-    this._retrieveProducts();
+  async componentWillMount() {
+      const store = await storage.load({key: 'userStore', autoSync: false, syncInBackgroud: false});
+      this.setState({store: store}, ()=> {
+          this._retrieveProducts();
+      });
   }
 
   componentWillReceiveProps(nextProps) {
     // if (nextProps.storeOrders) this.setState({ isLoading: false });
-  }
-
-  _showMessage(nextStatus, response) {
-    if (response.status === "error") {
-      console.log(`Update failed product status to ${nextStatus}`);
-      Toast.show({
-        text: `Cannot update status to ${nextStatus}`,
-        duration: 3000,
-        type: "danger"
-      });
-    } else {
-      Toast.show({
-        text: `Updated status to ${nextStatus}`,
-        duration: 3000,
-        type: "success"
-      });
-    }
   }
 
   _viewProduct(product) {
@@ -82,23 +66,6 @@ class ProductList extends Component {
     });
   }
 
-  _updateProductStatus(id, currentStatus, nextStatus) {
-    if (currentStatus === nextStatus) {
-      Toast.show({
-        text: "Already updated!",
-        buttonText: "Okay",
-        type: "warning"
-      });
-    } else {
-      console.log(`Updating product ${id} status to ${nextStatus}`);
-      this.props.actions.updateProductStatus(id, nextStatus)
-        .then(() => {
-          this._showMessage(nextStatus, this.props.updateProductStatus);
-          this._retrieveProducts(true);
-        });
-    }
-  }
-
   _onRefresh() {
     this.setState({ isRefreshing: true });
     this._retrieveProducts(true);
@@ -111,19 +78,20 @@ class ProductList extends Component {
   }
 
   _retrieveProducts(isRefreshed) {
-    const { filter_text } = this.state;
-    this.props.actions.retrieveProducts(filter_text)
-      .then(() => {
-        const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-        const dataSource = ds.cloneWithRows(this.props.products.items || []);
-        this.setState({
-          list: this.props.products.items || [],
-          dataSource,
-          isLoading: false
+    const { store, filter_text } = this.state;
+    const storeId = store._id.$oid;
+    this.props.actions.retrieveProducts(storeId, filter_text)
+        .then(() => {
+            const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+            const dataSource = ds.cloneWithRows(this.props.products.items || []);
+            this.setState({
+            list: this.props.products.items || [],
+            dataSource,
+            isLoading: false
+            });
+            // this._viewProduct(this.props.products.items[1]);
         });
-        // this._viewProduct(this.props.products.items[1]);
-      });
-    if (isRefreshed && this.setState({ isRefreshing: false }));
+if (isRefreshed && this.setState({ isRefreshing: false }));
   }
 
   render() {

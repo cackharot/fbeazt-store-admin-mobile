@@ -48,12 +48,17 @@ class OrderList extends Component {
         this._onRefresh = this._onRefresh.bind(this);
     }
 
-    componentWillMount() {
-        this._retrieveOrders();
-        timer.setInterval(this, 'loadOrders', () => {
-            console.log(`Fetching orders from timer ${Config.REFRESH_INTERVAL}`);
+    async componentWillMount() {
+        const store = await storage.load({key: 'userStore', autoSync: false, syncInBackgroud: false});
+        this.setState({store: store}, ()=> {
             this._retrieveOrders();
-        }, parseInt(Config.REFRESH_INTERVAL) * 60 * 1000);
+            if(!timer.intervalExists('loadOrders')) {
+                timer.setInterval(this, 'loadOrders', () => {
+                    console.log(`Fetching orders from timer ${Config.REFRESH_INTERVAL}`);
+                    this._retrieveOrders();
+                }, parseInt(Config.REFRESH_INTERVAL) * 60 * 1000);
+            }
+        });
     }
 
     componentWillUnmount() {
@@ -94,8 +99,8 @@ class OrderList extends Component {
     }
 
     _retrieveOrders(isRefreshed) {
-        const { filter } = this.state;
-        this.props.actions.retrieveOrders(filter)
+        const { store, filter } = this.state;
+        this.props.actions.retrieveOrders(store._id.$oid, filter)
         .then(() => {
             const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
             const dataSource = ds.cloneWithRows(this.props.storeOrders.items || []);

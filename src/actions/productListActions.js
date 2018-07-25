@@ -8,9 +8,9 @@ function retrieveProductsSuccess(res) {
     };
 }
 
-export function retrieveProducts(filter_text) {
+export function retrieveProducts(storeId, filter_text) {
     return function (dispatch) {
-        return httpClient.get(`/products/5b307053ac02377970451b41`,
+        return httpClient.get(`/products/${storeId}`,
             {
                 params: {
                     filter_text: filter_text || ""

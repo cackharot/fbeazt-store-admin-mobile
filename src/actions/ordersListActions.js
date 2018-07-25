@@ -29,9 +29,9 @@ function updateOrderStatusFailure(res) {
     };
 }
 
-export function retrieveOrders(orderStatus) {
+export function retrieveOrders(storeId, orderStatus) {
     return function (dispatch) {
-        return httpClient.get(`/store_orders/5b307053ac02377970451b41`,
+        return httpClient.get(`/store_orders/${storeId}`,
             {
                 params: {
                     order_status: Object.keys(orderStatus).filter(k => orderStatus[k]).join(",")
@@ -46,9 +46,9 @@ export function retrieveOrders(orderStatus) {
     };
 }
 
-export function retrieveOrderDetails(storeOrderId) {
+export function retrieveOrderDetails(storeId, storeOrderId) {
     return function (dispatch) {
-        return httpClient.get(`/store_orders/5b307053ac02377970451b41?store_order_id=${storeOrderId}`)
+        return httpClient.get(`/store_orders/${storeId}?store_order_id=${storeOrderId}`)
             .then(res => {
                 dispatch(retrieveOrderDetailsSuccess(res));
             })
@@ -58,10 +58,10 @@ export function retrieveOrderDetails(storeOrderId) {
     };
 }
 
-export function updateOrderStatus(storeOrderId, status) {
+export function updateOrderStatus(storeId, storeOrderId, status) {
     return function (dispatch) {
         const payload = {
-            store_id: '5b307053ac02377970451b41',
+            store_id: storeId,
             store_order_id: storeOrderId,
             status: status,
             notes: ''

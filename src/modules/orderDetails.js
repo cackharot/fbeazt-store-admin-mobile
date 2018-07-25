@@ -32,8 +32,11 @@ class OrderDetails extends Component {
         this._showMessage = this._showMessage.bind(this);
     }
 
-    componentWillMount() {
-        this._retrieveDetails();
+    async componentWillMount() {
+        const store = await storage.load({key: 'userStore', autoSync: false, syncInBackgroud: false});
+        this.setState({store: store}, ()=> {
+            this._retrieveDetails();
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,7 +44,9 @@ class OrderDetails extends Component {
     }
 
     _retrieveDetails() {
-        this.props.actions.retrieveOrderDetails(this.props.storeOrderId);
+        const {store} = this.state;
+        const storeId = store._id.$oid;
+        this.props.actions.retrieveOrderDetails(storeId, this.props.storeOrderId);
     }
 
     _showMessage(nextStatus, response) {
@@ -78,7 +83,9 @@ class OrderDetails extends Component {
             });
         } else {
             console.log(`Updating order ${storeOrderId} status to ${nextStatus}`);
-            this.props.actions.updateOrderStatus(storeOrderId, nextStatus)
+            const {store} = this.state;
+            const storeId = store._id.$oid;
+            this.props.actions.updateOrderStatus(storeId, storeOrderId, nextStatus)
                 .then(() => {
                     this._showMessage(nextStatus, this.props.updateStatusResponse);
                     this._retrieveDetails(true);

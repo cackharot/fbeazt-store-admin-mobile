@@ -14,19 +14,31 @@ import { Container, Text, Button, Right, Left, Body, Content, Icon } from 'nativ
 import { showMainApp } from '../appNav';
 import { httpClient } from '../actions/httpClient';
 import { setupNotification } from '../pushNotification';
+import ProgressBar from './components/progressBar';
 
 class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {}
+            isLoading: false,
+            user: {},
+            error: null
         };
     }
 
     componentDidMount = async () => {
     }
 
+    getStores = async () => {
+        return httpClient.get(`/user_stores`)
+            .then(res => res.data)
+            .catch(error=> {
+                console.log(error);
+            });
+    }
+
     _signIn = async () => {
+        this.setState({isLoading: true});
         try {
             const user = await GoogleSignin.signIn();
             this.setState({ user });
@@ -35,12 +47,21 @@ class LoginScreen extends Component {
                 storage.save({key: 'loginState', data: user});
                 storage.save({key: 'idToken', data: user.idToken});
                 httpClient.defaults.headers.common['Authorization'] = `Bearer ${user.idToken}`;
-                setupNotification(user.email);
-                showMainApp();
+                const stores = await this.getStores();
+                this.setState({isLoading: false});
+                if(stores && stores.length > 0) {
+                    const store = stores[0];
+                    storage.save({key: 'userStore', data: store});
+                    setupNotification(user.email);
+                    showMainApp();
+                }else{
+                    this.setState({error: `No stores found!`});
+                }
             }else{
                 this.setState({error: `Invalid login ${user.accessToken}`});
             }
         } catch (error) {
+            this.setState({isLoading: false});
             if (error.code === 'CANCELED') {
                 this.setState({error: 'Please sigin with a Google Account'});
                 // user cancelled the login flow
@@ -52,8 +73,9 @@ class LoginScreen extends Component {
     };
 
     render() {
-        const { user, error } = this.state;
+        const { isLoading, user, error } = this.state;
         return (
+            isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
             <Container>
                 <Content contentContainerStyle={{ flexBasis: '100%' }}>
                 <ImageBackground source={require('../images/login_bg.jpg')} style={styles.imageBackdrop} >
@@ -131,6 +153,12 @@ const styles = StyleSheet.create({
     },
     gplus: {
         color: '#4F4D8D'
+    },
+    progressBar: {
+        backgroundColor: '#4B7AAC',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 
