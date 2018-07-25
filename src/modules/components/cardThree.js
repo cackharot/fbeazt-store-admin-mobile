@@ -36,7 +36,7 @@ class CardThree extends Component {
     }
 
     render() {
-        const { order, viewOrder, updateOrderStatus } = this.props;
+        const { order, viewOrder } = this.props;
         const orderDate = moment(order.created_at.$date).utc();
         const dateStr = orderDate.local(true).fromNow();
         const nextStatus = this._getNextStatus(order.status);
@@ -80,8 +80,7 @@ class CardThree extends Component {
 
 CardThree.propTypes = {
     order: PropTypes.object.isRequired,
-    viewOrder: PropTypes.func.isRequired,
-    updateOrderStatus: PropTypes.func.isRequired
+    viewOrder: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

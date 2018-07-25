@@ -3,7 +3,9 @@ import {
     WEB_CLIENT_ID,
     GCM_SENDER_ID,
     ANDROID_BASE_URL,
-    IOS_BASE_URL
+    IOS_BASE_URL,
+
+    REFRESH_INTERVAL
 } from 'react-native-dotenv';
 
 export default {
@@ -11,5 +13,6 @@ export default {
     WEB_CLIENT_ID,
     GCM_SENDER_ID,
     ANDROID_BASE_URL,
-    IOS_BASE_URL
+    IOS_BASE_URL,
+    REFRESH_INTERVAL
 };
