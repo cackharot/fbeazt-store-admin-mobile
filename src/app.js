@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { iconsMap, iconsLoaded } from './appIcons';
 import { registerScreens } from './screens';
@@ -20,7 +21,7 @@ function setupGoogleSigin() {
       GoogleSignin.configure({
           iosClientId: Config.IOS_CLIENT_ID,
           webClientId: Config.WEB_CLIENT_ID,
-          offlineAccess: false,
+          offlineAccess: Platform.OS == "ios",
           forceConsentPrompt: true
       }).then(() => {
           showLogin();
