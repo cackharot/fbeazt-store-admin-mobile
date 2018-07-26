@@ -23,22 +23,7 @@ function setupGoogleSigin() {
           offlineAccess: false,
           forceConsentPrompt: true
       }).then(() => {
-        // start login screen on if user is available else main screen
-        console.log('Getting already google sigin user');
-        GoogleSignin.currentUserAsync().then((user) => {
-          if (user && user.idToken) {
-            storage.save({key: 'loginState', data: user});
-            storage.save({key: 'idToken', data: user.idToken});
-            httpClient.defaults.headers.common['Authorization'] = `Bearer ${user.idToken}`;
-            setupNotification(user.email);
-            showMainApp();
-          } else {
-            showLogin();
-          }
-        }).catch((e) => {
-          console.error(e);
           showLogin();
-        });
       });
     })
     .catch(err => {

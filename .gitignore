@@ -408,6 +408,7 @@ Temporary Items
 
 
 # End of https://www.gitignore.io/api/java,node,android,reactnative,intellij+all
+ios/Index/*
 
 .env
 .env.*

@@ -20,20 +20,51 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
+            isLoading: true,
             user: {},
             error: null
         };
     }
 
     componentDidMount = async () => {
+        console.log('Getting already signed in user.');
+        GoogleSignin.currentUserAsync().then((user) => {
+            this.checkUser(user).then((res) => {
+                this.setState({isLoading: false});
+                if(!res.error && showMainApp());
+            });
+        }).catch((e) => {
+            console.log(`No already sign in user found: ${e}`);
+            this.setState({isLoading: false});
+        });
     }
 
-    getStores = async () => {
+    checkUser = async (user) => {
+        if (!user || !user.idToken || user.idToken.length === 0) {
+            return { error: `Login attempt failed!` };
+        }
+        this.setState({ user });
+        storage.save({key: 'loginState', data: user});
+        storage.save({key: 'idToken', data: user.idToken});
+        const authToken = `Bearer ${user.idToken}`;
+        httpClient.defaults.headers.common['Authorization'] = authToken;
+        const stores = await this.getStores(authToken);
+        if(stores && stores.length > 0) {
+            const store = stores[0];
+            storage.save({key: 'userStore', data: store});
+            setupNotification(user.email);
+            return {};
+        }else{
+            await GoogleSignin.revokeAccess();
+            return { error: `Unauthorized! ${user.name} is not a store admin!` };
+        }
+    }
+
+    getStores = async (authToken) => {
         return httpClient.get(`/user_stores`)
             .then(res => res.data)
             .catch(error=> {
-                console.log(error);
+                console.log(JSON.stringify(error));
             });
     }
 
@@ -41,24 +72,12 @@ class LoginScreen extends Component {
         this.setState({isLoading: true});
         try {
             const user = await GoogleSignin.signIn();
-            this.setState({ user });
-            if (user && user.name && user.idToken) {
-                console.log(`Got signed in user ${user.name}`);
-                storage.save({key: 'loginState', data: user});
-                storage.save({key: 'idToken', data: user.idToken});
-                httpClient.defaults.headers.common['Authorization'] = `Bearer ${user.idToken}`;
-                const stores = await this.getStores();
-                this.setState({isLoading: false});
-                if(stores && stores.length > 0) {
-                    const store = stores[0];
-                    storage.save({key: 'userStore', data: store});
-                    setupNotification(user.email);
-                    showMainApp();
-                }else{
-                    this.setState({error: `No stores found!`});
-                }
+            const res = await this.checkUser(user);
+            if(!res.error){
+                showMainApp();
             }else{
-                this.setState({error: `Invalid login ${user.accessToken}`});
+                this.setState({isLoading: false});
+                this.setState({error: res.error});
             }
         } catch (error) {
             this.setState({isLoading: false});
@@ -73,7 +92,7 @@ class LoginScreen extends Component {
     };
 
     render() {
-        const { isLoading, user, error } = this.state;
+        const { isLoading, error } = this.state;
         return (
             isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
             <Container>
@@ -81,16 +100,18 @@ class LoginScreen extends Component {
                 <ImageBackground source={require('../images/login_bg.jpg')} style={styles.imageBackdrop} >
                     <LinearGradient colors={['rgba(80,80,135, 0.9)', 'rgba(80,80,130, 0.8)', 'rgba(80,80,140, 0.7)']} style={styles.linearGradient} />
                     <View style={styles.loginContainer}>
-                    <Icon name="pluse" ios="ios-pulse" android="ios-pulse" style={styles.logo} />
+                    <Icon name="ios-pulse" style={styles.logo} />
                     <Text style={styles.title}>Foodbeazt</Text>
                     <Text style={styles.desc}>Store administrator App</Text>
                     <Button style={styles.loginBtn} onPressOut={this._signIn}>
-                        <Icon name="logo-googleplus" android="logo-googleplus" style={styles.gplus}/>
+                        <Icon name="logo-googleplus" style={styles.gplus}/>
                         <Text style={styles.btnText}>Sign In with Google</Text>
                     </Button>
-                    { error && error.length > 0 &&
-                        <Text note>{error}</Text>
-                    }
+                { error && error.length > 0 && (
+                        <View style={styles.errorContainer}>
+                            <Text note style={styles.errorText}>{error}</Text>
+                        </View>
+                )}
                     </View>
                 </ImageBackground>
                 </Content>
@@ -106,6 +127,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    errorContainer:{
+        marginTop: 20
+    },
+    errorText:{
+        color: '#FDFDFD'
     },
     imageBackdrop: {
         width: null,
