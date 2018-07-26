@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
-import { Container, Text, Button, Right, Left, Body, Content, Icon } from 'native-base';
+import { Root, Container, Text, Button, Right, Left, Body, Content, Icon } from 'native-base';
 import { Thumbnail, Separator, Header, List, ListItem, Switch } from 'native-base';
 import { showLogin } from '../appNav';
 import ProgressBar from './components/progressBar';
@@ -61,15 +61,17 @@ class SettingsScreen extends Component {
         return (
             this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
             <Container>
-                <Content contentContainerStyle={{ flexBasis: '100%' }}>
                 {user && user.name && store && (
-                    <View>
+                   <Content>
                         <View style={styles.profileContainer}>
                             <Thumbnail source={{ uri: user.photo }} />
                             <Text>{user.givenName}</Text>
                         </View>
-                        <Separator bordered>
-                            <Text>Admin of the store:</Text>
+                        <Separator>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Icon name="person" style={{ fontSize: 22, marginRight: 10 }} />
+                        <Text>Admin of store:</Text>
+                        </View>
                         </Separator>
                         <ListItem>
                             <Body>
@@ -87,14 +89,13 @@ class SettingsScreen extends Component {
                                 <Text>Logout</Text>
                             </Body>
                         </ListItem>
-                    </View>
+                    </Content>
                 )}
             {(!user || !store) && (
-                    <View>
+                    <Content contentContainerStyle={{ flexBasis: '100%' }}>
                         <Text>Session is expired! Please login again</Text>
-                    </View>
+                    </Content>
             )}
-                </Content>
             </Container>
         );
     }
