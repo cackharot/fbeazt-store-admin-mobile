@@ -59,7 +59,7 @@ class StatusTimeline extends Component {
                 break;
             case 'PAID':
                 content = (
-                    <TouchableOpacity style={styles.btnStatus} activeOpacity={0.6}>
+                   <TouchableOpacity style={styles.btnStatus} activeOpacity={0.6} onPress={onClick.bind(this, order._id.$oid, order.status, 'PAID')}>
                         <Text style={textStyle}>{text}</Text>
                         <Icon name='ios-cash' active={active} style={istyle} />
                         <Text style={textStyle}>{this._getTimeStr(order, 'PAID')}</Text>
@@ -92,6 +92,7 @@ class StatusTimeline extends Component {
                 {this._getStatusIcon(order, 'PREPARING', 'PREPARING' === status, 'Cooking', onClick)}
                 {this._getStatusIcon(order, 'PROGRESS', 'PROGRESS' === status, 'Ready', onClick)}
                 {this._getStatusIcon(order, 'DELIVERED', 'DELIVERED' === status, 'Delivered', onClick)}
+                {this._getStatusIcon(order, 'PAID', 'PAID' === status, 'Paid', onClick)}
             </Segment>
         );
     }

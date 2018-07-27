@@ -62,7 +62,7 @@ class OrderDetails extends Component {
         if (response.status === "error") {
             console.log(`Update failed order status to ${statusName}`);
             Toast.show({
-                text: `Cannot update status to ${statusName}`,
+                text: `${response.message || 'Cannot change status'}`,
                 duration: 3000,
                 type: "danger"
             });
@@ -76,21 +76,35 @@ class OrderDetails extends Component {
     }
 
     _updateOrderStatus(storeOrderId, currentStatus, nextStatus) {
+        if(currentStatus === 'PAID'){
+            Toast.show({
+                text: 'Already PAID!',
+                type: 'warning'
+            });
+            return;
+        }
         if (currentStatus === nextStatus) {
             Toast.show({
                 text: "Already updated!",
                 type: "warning"
             });
-        } else {
-            console.log(`Updating order ${storeOrderId} status to ${nextStatus}`);
-            const {store} = this.state;
-            const storeId = store._id.$oid;
-            this.props.actions.updateOrderStatus(storeId, storeOrderId, nextStatus)
-                .then(() => {
-                    this._showMessage(nextStatus, this.props.updateStatusResponse);
-                    this._retrieveDetails(true);
-                });
+            return;
         }
+        if(currentStatus === 'DELIVERED' && nextStatus !== 'PAID'){
+            Toast.show({
+                text: 'Already PICKED. Cannot change!',
+                type: 'warning'
+            });
+            return;
+        }
+        console.log(`Updating order ${storeOrderId} status to ${nextStatus}`);
+        const {store} = this.state;
+        const storeId = store._id.$oid;
+        this.props.actions.updateOrderStatus(storeId, storeOrderId, nextStatus)
+            .then(() => {
+                this._showMessage(nextStatus, this.props.updateStatusResponse);
+                this._retrieveDetails(true);
+            });
     }
 
     statusTimings(order, status) {
@@ -159,7 +173,9 @@ class OrderDetails extends Component {
                                     }>
                                 </List>
                             </View>
-                            <StatusTimeline order={order} onClick={this._updateOrderStatus} />
+                            {order.status !== 'CANCELLED' && (
+                               <StatusTimeline order={order} onClick={this._updateOrderStatus} />
+                            )}
                             {order.status === 'PAID' && (
                             <View style={styles.statusNote}>
                                 <Text note>PAID successfully by Foodbeazt at {this.statusTimings(order, 'PAID')}</Text>
