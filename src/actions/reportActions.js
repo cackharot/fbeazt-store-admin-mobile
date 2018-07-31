@@ -15,9 +15,32 @@ export function getReports(storeId, params) {
                 dispatch({
                     type: types.RETRIEVE_REPORTS_STATUS_COUNTS,
                     data: {
-                       error
+                        error
                     }
                 });
             });
     };
 }
+
+export function orderTrends(storeId, params = {}) {
+    params.report_type = 'order_trends';
+    return function (dispatch) {
+        return httpClient.get(`/store_order_reports/${storeId}`, {params: params})
+            .then(res => {
+                dispatch({
+                    type: types.RETRIEVE_REPORTS_ORDER_TRENDS,
+                    data: res.data
+                });
+            })
+            .catch(error => {
+                console.log(error); //eslint-disable-line
+                dispatch({
+                    type: types.RETRIEVE_REPORTS_ORDER_TRENDS,
+                    data: {
+                        error
+                    }
+                });
+            });
+    };
+}
+

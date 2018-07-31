@@ -3,6 +3,7 @@ package com.foodbeaztstoreadmin;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends NavigationApplication {
         return Arrays.<ReactPackage>asList(
             new ReactNativePushNotificationPackage(),
             new VectorIconsPackage(),
+            new SvgPackage(),
             new LinearGradientPackage(),
             new RNGoogleSigninPackage()
         );

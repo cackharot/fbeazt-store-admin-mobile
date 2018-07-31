@@ -8,6 +8,11 @@ export default function (state = initialState.reports, action) {
                 ...state,
                 statusCounts: action.data
             };
+        case types.RETRIEVE_REPORTS_ORDER_TRENDS:
+            return {
+                ...state,
+                orderTrends: action.data
+            };
         default:
             return state;
     }
