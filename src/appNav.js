@@ -109,35 +109,51 @@ export function showMainApp() {
                         }
                     }
                 }
-          },
-          {
-            component: {
-              name: 'app.ReportScreen',
-              options: {
-                bottomTab: {
-                  text: 'Reports',
-                  icon: iconsMap['ios-stats']
-                }
-              },
-              passProps: {
-              },
             },
-          },
-          {
-            component: {
-              name: 'app.SettingsScreen',
-              options: {
-                bottomTab: {
-                  text: 'Settings',
-                  icon: iconsMap['ios-settings']
+            {
+                stack: {
+                    children: [{
+                        component: {
+                            id: 'reportsComponent',
+                            name: 'app.ReportScreen',
+                            options: {
+                                topBar: {
+                                    title: { text: `Reports` }
+                                }
+                            }
+                        }
+                    }],
+                    options: {
+                        bottomTab: {
+                            text: 'Reports',
+                            icon: iconsMap['ios-stats']
+                        }
+                    }
                 }
-              },
-              passProps: {
-              },
             },
-          },
-        ],
-      },
+            {
+                stack: {
+                    children: [{
+                        component: {
+                            id: 'settingsComponent',
+                            name: 'app.SettingsScreen',
+                            options: {
+                                topBar: {
+                                    title: { text: `Settings` }
+                                }
+                            }
+                        }
+                    }],
+                    options: {
+                        bottomTab: {
+                            text: 'Settings',
+                            icon: iconsMap['ios-settings']
+                        }
+                    }
+                }
+            }
+        ]
+      }
     }
   });
 }
