@@ -66,7 +66,7 @@ class OrderStatusFilter extends Component {
     render() {
         const { status, onChange } = this.props;
         return (
-            <FooterTab style={styles.statusSegment}>
+            <FooterTab>
                 {this._getStatusIcon('PENDING', 'Received')}
                 {this._getStatusIcon('PREPARING', 'Cooking')}
                 {this._getStatusIcon('PROGRESS', 'Ready')}
@@ -80,38 +80,5 @@ OrderStatusFilter.propTypes = {
     onChange: PropTypes.func.isRequired,
     statusCounts: PropTypes.object.isRequired
 };
-
-const styles = StyleSheet.create({
-    segmentIcon: Platform.select({
-        // ios: {
-        //     marginLeft: 0,
-        //     marginRight: 0,
-        //     color: 'white',
-        //     paddingHorizontal: 6
-        // },
-        // android: {
-        //     marginLeft: 0,
-        //     marginRight: 0,
-        //     paddingHorizontal: 3
-        // }
-    }),
-    btnStatus: {
-    },
-    segmentTitle: {
-        // fontSize: 13,
-        // paddingRight: 8,
-        // paddingLeft: 8,
-        // ...Platform.select({
-        //     ios: {
-        //         color: 'white'
-        //     },
-        //     android:{
-        //         fontSize: 11
-        //     }
-        // })
-    },
-    statusSegment: {
-    }
-});
 
 export default OrderStatusFilter;
