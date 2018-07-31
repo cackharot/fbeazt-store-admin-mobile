@@ -54,8 +54,8 @@ class OrderStatusFilter extends Component {
         const active = this.state.filter[status];
         const iconName = this.state.icons[status];
         var content = (
-                <Button badge vertical active={active} onPressOut={this._onClick.bind(this, status)}>
-                    <Badge success><Text>{count}</Text></Badge>
+                <Button badge={count > 0} vertical active={active} onPressOut={this._onClick.bind(this, status)}>
+                    {count > 0 && <Badge success><Text>{count}</Text></Badge>}
                     <Icon name={iconName} active={active}/>
                     <Text>{text}</Text>
                 </Button>
