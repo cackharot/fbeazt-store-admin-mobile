@@ -8,6 +8,6 @@ export default {
         details: {}
     },
     reports: {
-        list: {}
+        statusCounts: {}
     }
 };

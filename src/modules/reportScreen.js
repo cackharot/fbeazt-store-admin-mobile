@@ -33,21 +33,20 @@ class ReportScreen extends Component {
 
     async componentWillMount() {
         const store = await storage.load({key: 'userStore', autoSync: false, syncInBackgroud: false});
-        this.setState({store: store}, ()=> {
-            this._retrieveReports();
-        });
+        await this.setState({store: store, storeId : store._id.$oid});
+        await this._retrieveReports();
     }
 
     async _retrieveReports() {
-        const {store, query} = this.state;
-        const storeId = store._id.$oid;
+        const {storeId, query} = this.state;
         this.props.actions.getReports(storeId, query)
             .then(() => {
                 this.setState({isLoading: false});
                 const res =  this.props.reports;
-                console.log(`Got reports ${res}`);
+                console.log(`Got reports`, res);
                 if(res && res.error){
                     console.log(`${res.error}`);
+                    this.setState({error: res.error});
                 }else if(res && res.items){
                     this.setState({
                         reports: this.props.reports
@@ -77,7 +76,7 @@ ReportScreen.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        reports: state.reports.list
+        reports: state.reports.statusCounts
     };
 }
 

@@ -11,8 +11,10 @@ import {
   Platform
 } from 'react-native';
 import { Root } from "native-base";
-import { Container, Segment, Button, Right, Left, Header, Title, Body, Toast, Content, Icon } from 'native-base';
+import moment from 'moment';
+import { Container, Segment, Footer, Button, Right, Left, Header, Title, Body, Toast, Content, Icon } from 'native-base';
 import * as ordersListActions from '../actions/ordersListActions';
+import * as reportsActions from '../actions/reportActions';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 const timer = require('react-native-timer');
@@ -28,19 +30,26 @@ class OrderList extends Component {
 
     constructor(props) {
         super(props);
+        const d = moment().utc().local(true);
         this.state = {
-        list: [],
-        isLoading: true,
-        isRefreshing: false,
-        showToast: false,
-        filter: {
-            PENDING: true,
-            PREPARING: true,
-            PROGRESS: true,
-            DELIVERED: false,
-            PAID: false,
-            CANCELLED: false
-        }
+            list: [],
+            isLoading: true,
+            isRefreshing: false,
+            showToast: false,
+            filter: {
+                PENDING: true,
+                PREPARING: true,
+                PROGRESS: true,
+                DELIVERED: false,
+                PAID: false,
+                CANCELLED: false
+            },
+            statusCounts: {},
+            statusCountsParams:{
+                year: d.year(),
+                month: d.month() + 1,
+                day: d.date()
+            }
         };
 
         this._viewOrder = this._viewOrder.bind(this);
@@ -50,15 +59,15 @@ class OrderList extends Component {
 
     async componentWillMount() {
         const store = await storage.load({key: 'userStore', autoSync: false, syncInBackgroud: false});
-        this.setState({store: store}, ()=> {
-            this._retrieveOrders();
-            if(!timer.intervalExists('loadOrders')) {
-                timer.setInterval(this, 'loadOrders', () => {
-                    console.log(`Fetching orders from timer ${Config.REFRESH_INTERVAL}`);
-                    this._retrieveOrders();
-                }, parseInt(Config.REFRESH_INTERVAL) * 60 * 1000);
-            }
-        });
+        const storeId = store._id.$oid;
+        await this.setState({store: store, storeId});
+        await this._retrieveOrders();
+        if(!timer.intervalExists('loadOrders')) {
+            timer.setInterval(this, 'loadOrders', () => {
+                console.log(`Fetching orders from timer ${Config.REFRESH_INTERVAL}`);
+                this._retrieveOrders();
+            }, parseInt(Config.REFRESH_INTERVAL) * 60 * 1000);
+        }
     }
 
     componentWillUnmount() {
@@ -92,25 +101,26 @@ class OrderList extends Component {
         this._retrieveOrders(true);
     }
 
-    _onFilterChange(filter) {
-        this.setState({ isRefreshing: true, filter: filter }, () => {
-            this._retrieveOrders(true);
-        });
+    async _onFilterChange(filter) {
+        await this.setState({ isRefreshing: true, filter: filter });
+        await this._retrieveOrders(true);
     }
 
-    _retrieveOrders(isRefreshed) {
-        const { store, filter } = this.state;
-        this.props.actions.retrieveOrders(store._id.$oid, filter)
-        .then(() => {
-            const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
-            const dataSource = ds.cloneWithRows(this.props.storeOrders.items || []);
-            this.setState({
-                list: this.props.storeOrders,
-                dataSource,
-                isLoading: false
-            });
-            // this._viewOrder(this.props.storeOrders.items[2]._id.$oid);
+    async _retrieveOrders(isRefreshed) {
+        const { storeId, filter, statusCountsParams } = this.state;
+        const orderListRequest = this.props.actions.retrieveOrders(storeId, filter);
+        const reportsRequest = this.props.reportsActions.getReports(storeId, statusCountsParams);
+        await Promise.all([orderListRequest, reportsRequest]);
+
+        const ds = new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 });
+        const dataSource = ds.cloneWithRows(this.props.storeOrders.items || []);
+        this.setState({
+            statusCounts: this.props.reports,
+            list: this.props.storeOrders,
+            dataSource,
+            isLoading: false
         });
+        // this._viewOrder(this.props.storeOrders.items[2]._id.$oid);
         if (isRefreshed) {
             this.setState({ isRefreshing: false });
         }
@@ -120,11 +130,14 @@ class OrderList extends Component {
     }
 
     render() {
+        const {statusCounts} = this.state;
         return (
         this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
             <Root>
             <Container>
-                <OrderStatusFilter onChange={this._onFilterChange} />
+                <Footer>
+                <OrderStatusFilter statusCounts={statusCounts} onChange={this._onFilterChange} />
+                </Footer>
                 <Content contentContainerStyle={{ flexBasis: '100%' }}>
                 <ListView
                     style={styles.container}
@@ -156,13 +169,15 @@ class OrderList extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-      storeOrders: state.storeOrders.list
+      storeOrders: state.storeOrders.list,
+      reports: state.reports.statusCounts
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-      actions: bindActionCreators(ordersListActions, dispatch)
+      actions: bindActionCreators(ordersListActions, dispatch),
+      reportsActions: bindActionCreators(reportsActions, dispatch)
   };
 }
 

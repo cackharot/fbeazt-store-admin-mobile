@@ -28,25 +28,27 @@ class OrderDetails extends Component {
             isLoading: true,
             order: {}
         };
+        this._retrieveDetails = this._retrieveDetails.bind(this);
         this._updateOrderStatus = this._updateOrderStatus.bind(this);
-        this._showMessage = this._showMessage.bind(this);
     }
 
     async componentWillMount() {
         const store = await storage.load({key: 'userStore', autoSync: false, syncInBackgroud: false});
-        this.setState({store: store}, ()=> {
-            this._retrieveDetails();
-        });
+        if(!store || !store._id){
+            console.error('Invalid store stored');
+            return;
+        }
+        await this.setState({store: store, storeId: store._id.$oid});
+        this._retrieveDetails();
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.order) this.setState({ isLoading: false });
     }
 
-    _retrieveDetails() {
-        const {store} = this.state;
-        const storeId = store._id.$oid;
-        this.props.actions.retrieveOrderDetails(storeId, this.props.storeOrderId);
+    async _retrieveDetails() {
+        const {storeId} = this.state;
+        return this.props.actions.retrieveOrderDetails(storeId, this.props.storeOrderId);
     }
 
     _showMessage(nextStatus, response) {
@@ -75,7 +77,12 @@ class OrderDetails extends Component {
         }
     }
 
-    _updateOrderStatus(storeOrderId, currentStatus, nextStatus) {
+    async _updateOrderStatus(storeOrderId, currentStatus, nextStatus) {
+        // await this.setState({isLoading: true});
+        await this._retrieveDetails();
+        const { order } = this.props;
+        currentStatus = order.status;
+
         if(currentStatus === 'PAID'){
             Toast.show({
                 text: 'Already PAID!',
@@ -90,6 +97,7 @@ class OrderDetails extends Component {
             });
             return;
         }
+
         if(currentStatus === 'DELIVERED' && nextStatus !== 'PAID'){
             Toast.show({
                 text: 'Already PICKED. Cannot change!',
@@ -97,14 +105,12 @@ class OrderDetails extends Component {
             });
             return;
         }
+        const {storeId} = this.state;
         console.log(`Updating order ${storeOrderId} status to ${nextStatus}`);
-        const {store} = this.state;
-        const storeId = store._id.$oid;
-        this.props.actions.updateOrderStatus(storeId, storeOrderId, nextStatus)
-            .then(() => {
-                this._showMessage(nextStatus, this.props.updateStatusResponse);
-                this._retrieveDetails(true);
-            });
+        await this.props.actions.updateOrderStatus(storeId, storeOrderId, nextStatus);
+        this._showMessage(nextStatus, this.props.updateStatusResponse);
+        await this._retrieveDetails();
+        // this.setState({isLoading: false});
     }
 
     statusTimings(order, status) {
@@ -184,7 +190,7 @@ class OrderDetails extends Component {
                             {order.status === 'CANCELLED' && (
                             <View style={styles.statusNote}>
                                 <Text note>
-                                    CANCELLED by Foodbeazt at {this.statusTimings(order, 'PAID')}
+                                    CANCELLED by Foodbeazt at {this.statusTimings(order, 'CANCELLED')}
                                 </Text>
                             </View>
                             )}

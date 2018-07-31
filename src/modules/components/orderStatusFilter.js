@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Platform, TouchableOpacity, StyleSheet, View, ShadowPropTypesIOS } from 'react-native';
-import { Icon, Button, Segment, Text } from 'native-base';
+import { Badge, Icon, Button, Segment, FooterTab, Text } from 'native-base';
 import moment from 'moment';
 
 class OrderStatusFilter extends Component {
@@ -15,7 +15,15 @@ class OrderStatusFilter extends Component {
                 PROGRESS: true,
                 DELIVERED: false,
                 PAID: false,
-                CANCELLED: false,
+                CANCELLED: false
+            },
+            icons: {
+                PENDING: 'megaphone',
+                PREPARING: 'time',
+                PROGRESS: 'thumbs-up',
+                DELIVERED: 'checkmark-circle',
+                PAID: 'cash',
+                CANCELLED: 'remove-circle'
             }
         };
         this._onClick = this._onClick.bind(this);
@@ -32,108 +40,77 @@ class OrderStatusFilter extends Component {
         });
     }
 
-    _getStatusIcon(status, text) {
-        const istyle = [styles.segmentIcon];
-        const textStyle = [styles.segmentTitle];
-        const active = this.state.filter[status];
-        var content = null;
-        switch (status) {
-            case 'PREPARING':
-                content = (
-                    <Button transparent active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='ios-time' active={active} style={istyle} />
-                        <Text style={textStyle}>{text}</Text>
-                    </Button>
-                );
-                break;
-            case 'PROGRESS':
-                content = (
-                    <Button transparent active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='ios-thumbs-up' active={active} style={istyle} />
-                        <Text style={textStyle}>{text}</Text>
-                    </Button>
-                );
-                break;
-            case 'DELIVERED':
-                content = (
-                    <Button transparent last active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='checkmark-circle' active={active} style={istyle} />
-                        <Text style={textStyle}>{text}</Text>
-                    </Button>
-                );
-                break;
-            case 'PAID':
-                content = (
-                    <Button transparent last active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='ios-cash' active={active} style={istyle} />
-                        <Text style={textStyle}>{text}</Text>
-                    </Button>
-                );
-                break;
-            default:
-            case 'PENDING':
-                content = (
-                    <Button transparent first active={active} onPressOut={this._onClick.bind(this, status)}>
-                        <Icon name='ios-megaphone' active={active} style={istyle} />
-                        <Text style={textStyle}>{text}</Text>
-                    </Button>
-                );
-                break;
+    _calCount(status) {
+        let cnt = parseInt(this.props.statusCounts[status.toLowerCase()] || 0);
+        if(status === 'DELIVERED'){
+            let paid = parseInt(this.props.statusCounts['paid'] || 0);
+            cnt = cnt + paid;
         }
-        return content;
+        return cnt;
     }
+
+    _getStatusIcon(status, text) {
+        const count = this._calCount(status);
+        const active = this.state.filter[status];
+        const iconName = this.state.icons[status];
+        var content = (
+                <Button badge vertical active={active} onPressOut={this._onClick.bind(this, status)}>
+                    <Badge success><Text>{count}</Text></Badge>
+                    <Icon name={iconName} active={active}/>
+                    <Text>{text}</Text>
+                </Button>
+        );
+        return content;
+   }
 
     render() {
         const { status, onChange } = this.props;
         return (
-            <Segment style={styles.statusSegment}>
+            <FooterTab style={styles.statusSegment}>
                 {this._getStatusIcon('PENDING', 'Received')}
                 {this._getStatusIcon('PREPARING', 'Cooking')}
                 {this._getStatusIcon('PROGRESS', 'Ready')}
-                {this._getStatusIcon('DELIVERED', 'Delivered')}
-            </Segment>
+                {this._getStatusIcon('DELIVERED', 'Done/Paid')}
+            </FooterTab>
         );
     }
 }
 
 OrderStatusFilter.propTypes = {
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    statusCounts: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({
     segmentIcon: Platform.select({
-        ios: {
-            marginLeft: 0,
-            marginRight: 0,
-            color: 'white',
-            paddingHorizontal: 6,
-        },
-        android: {
-            marginLeft: 0,
-            marginRight: 0,
-            paddingHorizontal: 3
-        }
+        // ios: {
+        //     marginLeft: 0,
+        //     marginRight: 0,
+        //     color: 'white',
+        //     paddingHorizontal: 6
+        // },
+        // android: {
+        //     marginLeft: 0,
+        //     marginRight: 0,
+        //     paddingHorizontal: 3
+        // }
     }),
     btnStatus: {
-        // flex: 1,
-        // alignItems: 'center',
     },
     segmentTitle: {
-        fontSize: 13,
-        paddingRight: 8,
-        paddingLeft: 8,
-        ...Platform.select({
-            ios: {
-                color: 'white'
-            },
-            android:{
-                fontSize: 11
-            }
-        })
+        // fontSize: 13,
+        // paddingRight: 8,
+        // paddingLeft: 8,
+        // ...Platform.select({
+        //     ios: {
+        //         color: 'white'
+        //     },
+        //     android:{
+        //         fontSize: 11
+        //     }
+        // })
     },
     statusSegment: {
-        backgroundColor: '#6566A0',
-        padding: 0
     }
 });
 
