@@ -39,6 +39,7 @@ class ReportScreen extends Component {
                 year: d.year()
             },
             statusCounts: {},
+            statusAmounts: {},
             statusCountsParams:{
                 year: d.year(),
                 month: d.month() + 1,
@@ -80,7 +81,7 @@ class ReportScreen extends Component {
 
     applyStatusCounts() {
         const sc = this.props.statusCounts;
-        this.setState({statusCounts: sc});
+        this.setState({statusCounts: sc, statusAmounts: sc.amounts});
     }
 
     applyOrderTrends() {
@@ -122,16 +123,20 @@ class ReportScreen extends Component {
     }
 
     renderTodayReport() {
-        const { statusCounts } = this.state;
+        const { statusCounts, statusAmounts } = this.state;
         const paid = statusCounts['paid'] || 0;
+        const paidAmt = statusAmounts['paid'] || 0;
         const unpaid = statusCounts['delivered'] || 0;
+        const unpaidAmt = statusAmounts['delivered'] || 0;
         const cancelled = statusCounts['cancelled'] || 0;
+        const cancelledAmt = statusAmounts['cancelled'] || 0;
         const total = paid+unpaid+cancelled;
+        const totalAmt = paidAmt+unpaidAmt+cancelledAmt;
         const data = [
-            {key: 'Total', value: total},
-            {key: 'Paid', value: paid},
-            {key: 'Unpaid', value: unpaid},
-            {key: 'Cancelled', value: cancelled},
+            {icon: 'card', color: '#2181F7', key: 'Total', value: total, amt: totalAmt},
+            {icon: 'cash', color: '#5CB85C', key: 'Paid', value: paid, amt: paidAmt},
+            {icon: 'cash', color: '#F7403D', key: 'Unpaid', value: unpaid, amt: unpaidAmt},
+            {icon: 'remove', color: '#8F8E93', key: 'Cancelled', value: cancelled, amt: cancelledAmt},
         ];
         return (
                 <View>
@@ -141,19 +146,29 @@ class ReportScreen extends Component {
                 <View>
                 <List noIndent dataArray={data}
             renderRow={(item) =>
-                       <ListItem noIndent>
-                       <Body>
-                       <Text>{item.key}</Text>
-                       </Body>
-                       <Right>
-                       <Text note>{parseInt(item.value).toFixed(0)}</Text>
-                       </Right>
+                       <ListItem noIndent icon style={{paddingLeft: 6}}>
+                            <Left>
+                                <Button transparent>
+                                    <Badge style={{backgroundColor: item.color}}>
+                                        <Text>{parseInt(item.value).toFixed(0)}</Text>
+                                    </Badge>
+                                </Button>
+                            </Left>
+                            <Body>
+                                <Text>{item.key}</Text>
+                            </Body>
+                            <Right>
+                                <Text note>₹{parseFloat(item.amt).toFixed(2)}</Text>
+                            </Right>
                        </ListItem>
                       }>
                 </List>
                 </View>
                 </View>);
     }
+    //<Text style={{fontSize: 10, lineHeight: 14, textAlign: 'center', fontFamily: 'Roboto'}}>
+    //<Badge style={{backgroundColor: '#5cb85c', alignSelf: 'center', paddingLeft: 3, paddingRight: 3, paddingTop: 1.7, paddingBottom: 1.7, left: 10, height: 18, top: -3}}>
+    //<Icon name={item.icon} style={{color: '#FFF', marginTop: -13}}/>
 
     render() {
         const { categories, reports, query } = this.state;
