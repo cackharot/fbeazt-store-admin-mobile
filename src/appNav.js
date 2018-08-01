@@ -36,7 +36,8 @@ export function setDefaultNavOptions() {
       background: {
         color: '#4D4B88'
         // color: 'white'
-      }
+      },
+      rightButtons: []
     },
     bottomTabs: {
       titleDisplayMode: 'alwaysShow',

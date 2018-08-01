@@ -133,7 +133,7 @@ if (isRefreshed && this.setState({ isRefreshing: false }));
                   </TouchableOpacity>
                 )}
                 renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.seperator} />}
-                renderFooter={() => <View style={{ height: 50 }}><ProgressBar /></View>}
+                renderFooter={() => <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}><Text note>Pull down to refresh</Text></View>}
                 refreshControl={
                   <RefreshControl
                     refreshing={this.state.isRefreshing}

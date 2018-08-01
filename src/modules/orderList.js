@@ -21,12 +21,21 @@ const timer = require('react-native-timer');
 import Config from '../appConfig';
 
 import styles from './styles/orders';
+import { iconsMap } from '../appIcons';
 
 import OrderStatusFilter from './components/orderStatusFilter';
 import CardThree from './components/cardThree';
 import ProgressBar from './components/progressBar';
 
 class OrderList extends Component {
+    static get options() {
+        return {
+            topBar: {
+                visible: false,
+                drawBehind: true
+            }
+        };
+    }
 
     constructor(props) {
         super(props);
@@ -147,7 +156,7 @@ class OrderList extends Component {
                     dataSource={this.state.dataSource}
                     renderRow={rowData => <CardThree order={rowData} viewOrder={this._viewOrder} />}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.seperator} />}
-                    renderFooter={() => <View style={{ height: 50 }}><ProgressBar /></View>}
+                    renderFooter={() => <View style={{ height: 50, justifyContent: 'center', alignItems: 'center' }}><Text note>Pull down to refresh</Text></View>}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
