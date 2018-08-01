@@ -118,7 +118,11 @@ export function showMainApp() {
                             name: 'app.ReportScreen',
                             options: {
                                 topBar: {
-                                    title: { text: `Reports` }
+                                    title: { text: `Reports` },
+                                    rightButtons: {
+                                        id: 'reportsRefreshButton',
+                                        icon: iconsMap['ios-refresh']
+                                    }
                                 }
                             }
                         }

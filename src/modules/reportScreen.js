@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Navigation } from 'react-native-navigation';
 import {
     ImageBackground,
     RefreshControl,
@@ -23,8 +24,20 @@ import ProgressBar from './components/progressBar';
 import { VictoryBar, VictoryArea, VictoryPie, VictoryChart, VictoryStack, VictoryTheme } from "victory-native";
 
 class ReportScreen extends Component {
+    // static get options() {
+    //     return {
+    //         topBar: {
+    //             rightButtons: {
+    //                 id: 'reportsRefreshButton',
+    //                 icon: iconsMap['ios-refresh']
+    //             }
+    //         }
+    //     };
+    // }
+
     constructor(props) {
         super(props);
+        Navigation.events().bindComponent(this);
         const d = moment().utc().local(true);
         this.state = {
             isLoading: true,
@@ -46,6 +59,13 @@ class ReportScreen extends Component {
                 day: d.date()
             }
         };
+    }
+
+    navigationButtonPressed({ buttonId }) {
+        if(buttonId === 'reportsRefreshButton') {
+            this.setState({isLoading: true});
+            this._retrieveReports();
+        }
     }
 
     async componentWillMount() {
@@ -133,10 +153,10 @@ class ReportScreen extends Component {
         const total = paid+unpaid+cancelled;
         const totalAmt = paidAmt+unpaidAmt+cancelledAmt;
         const data = [
-            {icon: 'card', color: '#2181F7', key: 'Total', value: total, amt: totalAmt},
+            {icon: 'done-all', color: '#2181F7', key: 'Total', value: total, amt: totalAmt},
             {icon: 'cash', color: '#5CB85C', key: 'Paid', value: paid, amt: paidAmt},
-            {icon: 'cash', color: '#F7403D', key: 'Unpaid', value: unpaid, amt: unpaidAmt},
-            {icon: 'remove', color: '#8F8E93', key: 'Cancelled', value: cancelled, amt: cancelledAmt},
+            {icon: 'mail-open', color: '#F7403D', key: 'Unpaid', value: unpaid, amt: unpaidAmt},
+            {icon: 'remove-circle', color: '#8F8E93', key: 'Cancelled', value: cancelled, amt: cancelledAmt},
         ];
         return (
                 <View>
@@ -166,9 +186,6 @@ class ReportScreen extends Component {
                 </View>
                 </View>);
     }
-    //<Text style={{fontSize: 10, lineHeight: 14, textAlign: 'center', fontFamily: 'Roboto'}}>
-    //<Badge style={{backgroundColor: '#5cb85c', alignSelf: 'center', paddingLeft: 3, paddingRight: 3, paddingTop: 1.7, paddingBottom: 1.7, left: 10, height: 18, top: -3}}>
-    //<Icon name={item.icon} style={{color: '#FFF', marginTop: -13}}/>
 
     render() {
         const { categories, reports, query } = this.state;

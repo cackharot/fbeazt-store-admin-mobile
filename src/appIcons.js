@@ -17,6 +17,7 @@ const icons = {
 
     "ios-arrow-back": [30, "#999"],
 
+    "ios-refresh": [30, "#fff"],
     "ios-person": [30, "#bbb"],
     "ios-list": [30, "#bbb"],
     "ios-restaurant": [30, "#bbb"],
