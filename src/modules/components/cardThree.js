@@ -59,7 +59,7 @@ class CardThree extends Component {
                         </View>
                     </View>
                     <View style={styles.rightContent}>
-                        <Text style={styles.total}>₹{order.total}</Text>
+                        <Text style={styles.total}>₹{order.payable.toFixed(2)}</Text>
                         <Text style={styles.listHeadingRight}>{order.store_order_no}</Text>
                     </View>
                 </View>

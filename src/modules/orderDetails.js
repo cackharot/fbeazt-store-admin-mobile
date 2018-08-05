@@ -38,7 +38,7 @@ class OrderDetails extends Component {
             console.error('Invalid store stored');
             return;
         }
-        await this.setState({store: store, storeId: store._id.$oid});
+        await this.setState({store: store, storeId: store._id.$oid, storeDiscount: store.given_discount || 0.0});
         this._retrieveDetails();
     }
 
@@ -121,6 +121,29 @@ class OrderDetails extends Component {
         return 'NA';
     }
 
+    renderTotals() {
+        const { order } = this.props;
+        const data = [
+            {text: 'Total', value: `₹${order.total.toFixed(2)}`},
+            {text: 'Discount', value: `${order.store_discount}%`},
+            {text: 'Payable', value: `₹${order.payable.toFixed(2)}`}
+        ];
+        return (
+                <List noIndent dataArray={data}
+            renderRow={(item) =>
+                       <ListItem noIndent icon style={{paddingLeft: 6}}>
+                            <Body>
+                                <Text>{item.text}</Text>
+                            </Body>
+                            <Right>
+                                <Text note>{item.value}</Text>
+                            </Right>
+                       </ListItem>
+                      }
+            />
+        )
+    }
+
     render() {
         const { order } = this.props;
         var orderDate, dateStr;
@@ -146,8 +169,8 @@ class OrderDetails extends Component {
                                                 <Text style={styles.timeago}>{orderDate.format('DD/MM/YYYY LT')} ({dateStr})</Text>
                                             </View>
                                         </View>
-                <View style={{ alignSelf: 'flex-start' }}>
-                                            <Text style={styles.orderTotal}>₹{order.total}</Text>
+                                        <View style={{ alignSelf: 'flex-start' }}>
+                                            <Text style={styles.orderTotal}>₹{order.payable.toFixed(2)}</Text>
                                         </View>
                                     </View>
                                 </ImageBackground>
@@ -181,6 +204,7 @@ class OrderDetails extends Component {
                                         </ListItem>
                                     }>
                                 </List>
+                                {this.renderTotals()}
                             </View>
                             {order.status !== 'CANCELLED' && (
                                <StatusTimeline order={order} onClick={this._updateOrderStatus} />

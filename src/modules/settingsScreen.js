@@ -79,6 +79,19 @@ class SettingsScreen extends Component {
                                 <Text note>{store.address}</Text>
                             </Body>
                         </ListItem>
+                        <ListItem icon>
+                            <Left>
+                                <Button style={{ backgroundColor: "#3187F0" }}>
+                                    <Icon active name="cut" />
+                                </Button>
+                            </Left>
+                            <Body>
+                                <Text>Discount</Text>
+                            </Body>
+                            <Right>
+                                <Text note>{store.given_discount}%</Text>
+                            </Right>
+                        </ListItem>
                         <ListItem icon button onPressOut={this._signOut}>
                             <Left>
                                 <Button style={{ backgroundColor: "#F7403D" }}>
