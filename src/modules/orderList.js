@@ -29,6 +29,9 @@ import ProgressBar from './components/progressBar';
 
 class OrderList extends Component {
     static get options() {
+        if(Platform.OS === 'ios') {
+            return {};
+        }
         return {
             topBar: {
                 visible: false,

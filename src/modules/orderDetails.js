@@ -159,20 +159,23 @@ class OrderDetails extends Component {
                             <View>
                                 <List noIndent dataArray={order.items}
                                     renderRow={(item) =>
-                                        <ListItem noIndent>
+                                               <ListItem noIndent icon style={{paddingLeft: 6}}>
+                                               <Left>
+                                               <Button transparent>
+                                               <Badge primary><Text>{item.quantity}</Text></Badge>
+                                               </Button>
+                                               </Left>
                                             <Body>
-                                                <Text>{item.name}</Text>
+                                               <Text>{item.name}</Text>
+                                               {item.category === 'combo' && (
+                                                       <Text note>{item.description.replace("\n", ", ")}</Text>
+                                               )}
                                                 {item.price_detail && item.price_detail.price > 0.0 && (
                                                     <Text>{item.price_detail.description}</Text>
                                                 )}
                                             </Body>
                                             <Right>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Text note>{item.price}x </Text>
-                                                    <Badge primary>
-                                                        <Text>{item.quantity}</Text>
-                                                    </Badge>
-                                                </View>
+                                               <Text note>{item.price}x{item.quantity}      </Text>
                                                 <Text>{item.total}</Text>
                                             </Right>
                                         </ListItem>
