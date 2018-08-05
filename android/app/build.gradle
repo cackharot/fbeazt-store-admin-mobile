@@ -101,8 +101,8 @@ android {
         applicationId "com.foodbeaztstoreadmin"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
         multiDexEnabled false 
         ndk {
@@ -154,6 +154,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-device-info')
     implementation project(':react-native-svg')
     implementation project(':react-native-push-notification')
     implementation project(':react-native-google-signin')

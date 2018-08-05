@@ -3,6 +3,7 @@ package com.foodbeaztstoreadmin;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.horcrux.svg.SvgPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -31,7 +32,8 @@ public class MainApplication extends NavigationApplication {
             new VectorIconsPackage(),
             new SvgPackage(),
             new LinearGradientPackage(),
-            new RNGoogleSigninPackage()
+            new RNGoogleSigninPackage(),
+            new RNDeviceInfo()
         );
     }
 

@@ -13,6 +13,7 @@ import { Root, Container, Text, Button, Right, Left, Body, Content, Icon } from 
 import { Thumbnail, Separator, Header, List, ListItem, Switch } from 'native-base';
 import { showLogin } from '../appNav';
 import ProgressBar from './components/progressBar';
+import DeviceInfo from 'react-native-device-info';
 
 class SettingsScreen extends Component {
     constructor(props) {
@@ -90,6 +91,19 @@ class SettingsScreen extends Component {
                             </Body>
                             <Right>
                                 <Text note>{store.given_discount}%</Text>
+                            </Right>
+                        </ListItem>
+                        <ListItem icon>
+                            <Left>
+                                <Button style={{ backgroundColor: "#FB9337" }}>
+                                    <Icon active name="apps" />
+                                </Button>
+                            </Left>
+                            <Body>
+                                <Text>App Version</Text>
+                            </Body>
+                            <Right>
+                                <Text note>{DeviceInfo.getVersion()}</Text>
                             </Right>
                         </ListItem>
                         <ListItem icon button onPressOut={this._signOut}>
