@@ -3,10 +3,15 @@ import initialState from './initialState';
 
 export default function (state = initialState.reports, action) {
     switch (action.type) {
+        case types.RETRIEVE_REPORTS_OUTSTANDING:
+            return {
+                ...state,
+                outstanding: action.data
+            };
         case types.RETRIEVE_REPORTS_STATUS_COUNTS:
             return {
                 ...state,
-                statusCounts: action.data
+                today: action.data
             };
         case types.RETRIEVE_REPORTS_ORDER_TRENDS:
             return {

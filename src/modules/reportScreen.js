@@ -51,13 +51,14 @@ class ReportScreen extends Component {
             query: {
                 year: d.year()
             },
-            statusCounts: {},
-            statusAmounts: {},
-            statusCountsParams:{
+            today: { statusCounts: {}, statusAmounts: {} },
+            outstanding: { statusCounts: {}, statusAmounts: {} },
+            statusCountsParams: {
                 year: d.year(),
                 month: d.month() + 1,
                 day: d.date()
-            }
+            },
+            outstandingParams: {year: 0, month: 0, day: 0}
         };
     }
 
@@ -87,21 +88,28 @@ class ReportScreen extends Component {
     }
 
     async _retrieveReports() {
-        const {storeId, query, statusCountsParams} = this.state;
+        const {storeId, query, statusCountsParams, outstandingParams} = this.state;
 
         const screq = this.props.actions.getReports(storeId, statusCountsParams);
+        const osreq  = this.props.actions.getOutstandingReports(storeId, outstandingParams);
         const otreq = this.props.actions.orderTrends(storeId, query);
 
-        await Promise.all([screq, otreq]);
+        await Promise.all([screq, osreq, otreq]);
 
         this.setState({isLoading: false});
         this.applyOrderTrends();
         this.applyStatusCounts();
+        this.applyOutstanding();
+    }
+
+    applyOutstanding() {
+        const sc = this.props.outstanding;
+        this.setState({outstanding: {statusCounts: sc, statusAmounts: sc.amounts}});
     }
 
     applyStatusCounts() {
-        const sc = this.props.statusCounts;
-        this.setState({statusCounts: sc, statusAmounts: sc.amounts});
+        const sc = this.props.today;
+        this.setState({today: {statusCounts: sc, statusAmounts: sc.amounts}});
     }
 
     applyOrderTrends() {
@@ -142,8 +150,8 @@ class ReportScreen extends Component {
             </View>);
     }
 
-    renderTodayReport() {
-        const { statusCounts, statusAmounts } = this.state;
+    renderReport(title, reportData) {
+        const { statusCounts, statusAmounts } = reportData;
         const paid = statusCounts['paid'] || 0;
         const paidAmt = statusAmounts['paid'] || 0;
         const unpaid = statusCounts['delivered'] || 0;
@@ -160,30 +168,30 @@ class ReportScreen extends Component {
         ];
         return (
                 <View>
-                <Separator>
-                <Text>Today</Text>
-                </Separator>
-                <View>
-                <List noIndent dataArray={data}
-            renderRow={(item) =>
-                       <ListItem noIndent icon style={{paddingLeft: 6}}>
-                            <Left>
-                                <Button transparent>
-                                    <Badge style={{backgroundColor: item.color}}>
-                                        <Text>{parseInt(item.value).toFixed(0)}</Text>
-                                    </Badge>
-                                </Button>
-                            </Left>
-                            <Body>
-                                <Text>{item.key}</Text>
-                            </Body>
-                            <Right>
-                                <Text note>₹{parseFloat(item.amt).toFixed(2)}</Text>
-                            </Right>
-                       </ListItem>
-                      }>
-                </List>
-                </View>
+                    <Separator>
+                        <Text>{title}</Text>
+                    </Separator>
+                    <View>
+                        <List noIndent dataArray={data}
+                            renderRow={(item) =>
+                            <ListItem noIndent icon style={{paddingLeft: 6}}>
+                                    <Left>
+                                        <Button transparent>
+                                            <Badge style={{backgroundColor: item.color}}>
+                                                <Text>{parseInt(item.value).toFixed(0)}</Text>
+                                            </Badge>
+                                        </Button>
+                                    </Left>
+                                    <Body>
+                                        <Text>{item.key}</Text>
+                                    </Body>
+                                    <Right>
+                                        <Text note>₹{parseFloat(item.amt).toFixed(2)}</Text>
+                                    </Right>
+                            </ListItem>
+                            }>
+                    </List>
+                    </View>
                 </View>);
     }
 
@@ -194,7 +202,8 @@ class ReportScreen extends Component {
                 <Root>
                     <Container>
                         <Content>
-            {this.renderTodayReport()}
+            {this.renderReport('Today', this.state.today)}
+            {this.renderReport('Outstanding', this.state.outstanding)}
             {this.renderOrderTrends()}
                         </Content>
                     </Container>
@@ -209,7 +218,8 @@ ReportScreen.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        statusCounts: state.reports.statusCounts,
+        today: state.reports.today,
+        outstanding: state.reports.outstanding,
         orderTrends: state.reports.orderTrends
     };
 }

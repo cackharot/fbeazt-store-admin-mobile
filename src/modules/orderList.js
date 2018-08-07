@@ -182,7 +182,7 @@ class OrderList extends Component {
 function mapStateToProps(state, ownProps) {
   return {
       storeOrders: state.storeOrders.list,
-      reports: state.reports.statusCounts
+      reports: state.reports.today
   };
 }
 
