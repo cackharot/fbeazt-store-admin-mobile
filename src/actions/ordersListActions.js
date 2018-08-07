@@ -29,12 +29,20 @@ function updateOrderStatusFailure(res) {
     };
 }
 
-export function retrieveOrders(storeId, orderStatus) {
+export function retrieveOrders(storeId, params) {
+    const validStatus = ['PENDING','PREPARING','PROGRESS','DELIVERED','CANCELLED','PAID'];
+    const order_status = Object.keys(params)
+          .filter(k => validStatus.indexOf(k) != -1)
+          .filter(k => params[k] === true)
+          .join(",");
     return function (dispatch) {
         return httpClient.get(`/store_orders/${storeId}`,
             {
                 params: {
-                    order_status: Object.keys(orderStatus).filter(k => orderStatus[k]).join(",")
+                    order_status: order_status,
+                    start_date: params.start_date,
+                    end_date: params.end_date,
+                    only_today: params.only_today
                 }
             })
             .then(res => {

@@ -77,7 +77,11 @@ export function showMainApp() {
                             name: 'app.orderList',
                             options: {
                                 topBar: {
-                                    title: { text: `Orders` }
+                                    title: { text: `Orders` },
+                                    rightButtons: {
+                                        id: 'orderListFilter',
+                                        icon: iconsMap['ios-options']
+                                    }
                                 }
                             }
                         }

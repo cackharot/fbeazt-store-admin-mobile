@@ -28,20 +28,10 @@ import CardThree from './components/cardThree';
 import ProgressBar from './components/progressBar';
 
 class OrderList extends Component {
-    static get options() {
-        if(Platform.OS === 'ios') {
-            return {};
-        }
-        return {
-            topBar: {
-                visible: false,
-                drawBehind: true
-            }
-        };
-    }
 
     constructor(props) {
         super(props);
+        Navigation.events().bindComponent(this);
         const d = moment().utc().local(true);
         this.state = {
             list: [],
@@ -49,6 +39,7 @@ class OrderList extends Component {
             isRefreshing: false,
             showToast: false,
             filter: {
+                only_today: true,
                 PENDING: true,
                 PREPARING: true,
                 PROGRESS: true,
@@ -67,19 +58,20 @@ class OrderList extends Component {
         this._viewOrder = this._viewOrder.bind(this);
         this._onFilterChange = this._onFilterChange.bind(this);
         this._onRefresh = this._onRefresh.bind(this);
+        this.updateFilter = this.updateFilter.bind(this);
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         const store = await storage.load({key: 'userStore', autoSync: false, syncInBackgroud: false});
         const storeId = store._id.$oid;
         await this.setState({store: store, storeId});
-        await this._retrieveOrders();
         if(!timer.intervalExists('loadOrders')) {
             timer.setInterval(this, 'loadOrders', () => {
                 console.log(`Fetching orders from timer ${Config.REFRESH_INTERVAL}`);
                 this._retrieveOrders();
             }, parseInt(Config.REFRESH_INTERVAL) * 60 * 1000);
         }
+        await this._retrieveOrders();
     }
 
     componentWillUnmount() {
@@ -88,6 +80,46 @@ class OrderList extends Component {
 
     componentWillReceiveProps(nextProps) {
         // if (nextProps.storeOrders) this.setState({ isLoading: false });
+    }
+
+    updateFilter(filter){
+        // console.log(`Update order list filter to:`, filter);
+        this.setState({filter}, () => {
+            this._onRefresh();
+        });
+    }
+
+    showFilter() {
+        Navigation.showModal({
+            stack: {
+                children: [{
+                    component: {
+                        name: 'app.OrderListFilter',
+                        passProps: {
+                            filter: this.state.filter,
+                            update: this.updateFilter
+                        },
+                        options: {
+                            topBar: {
+                                title: {text: 'Filter Orders'},
+                                leftButtons: [
+                                    {
+                                        id: 'orderListFilterBack',
+                                        icon: iconsMap['ios-close']
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }]
+            }
+        });
+    }
+
+    navigationButtonPressed({ buttonId }) {
+        if(buttonId === 'orderListFilter') {
+            this.showFilter();
+        }
     }
 
     _viewOrder(storeOrderId) {
@@ -114,7 +146,10 @@ class OrderList extends Component {
     }
 
     async _onFilterChange(filter) {
-        await this.setState({ isRefreshing: true, filter: filter });
+        await this.setState({
+            isRefreshing: true,
+            filter: Object.assign(this.state.filter, filter)
+        });
         await this._retrieveOrders(true);
     }
 
