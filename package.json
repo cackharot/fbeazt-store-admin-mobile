@@ -1,6 +1,6 @@
 {
   "name": "foodbeaztStoreAdmin",
-  "version": "1.2",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "moment": "^2.22.2",
     "native-base": "^2.7.1",
+    "npm": "^6.3.0",
     "react": "16.3.1",
     "react-native": "0.55.4",
     "react-native-device-info": "^0.22.2",

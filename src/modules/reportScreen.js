@@ -49,16 +49,16 @@ class ReportScreen extends Component {
                 this._fmtMonth(null, null)
             ],
             query: {
-                year: d.year()
+                start_date: moment.utc([d.year(), 0, 1]).toDate(),
+                end_date: moment.utc([d.year(), 11, 31]).toDate()
             },
             today: { statusCounts: {}, statusAmounts: {} },
             outstanding: { statusCounts: {}, statusAmounts: {} },
-            statusCountsParams: {
-                year: d.year(),
-                month: d.month() + 1,
-                day: d.date()
+            statusCountsParams:{
+                start_date: d.toDate(),
+                end_date: d.toDate()
             },
-            outstandingParams: {year: 0, month: 0, day: 0}
+            outstandingParams: {}
         };
     }
 
@@ -134,10 +134,14 @@ class ReportScreen extends Component {
 
     renderOrderTrends() {
         const { categories, reports, query } = this.state;
+        const st = moment.utc(query.start_date).format('ll');
+        const et = moment.utc(query.end_date).format('ll');
         return (
             <View>
                 <Separator>
-                    <Text>Order trends for {query.year}</Text>
+                    <Text>
+                        Order trends for {st} - {et}
+                    </Text>
                 </Separator>
                 <VictoryChart width={450} theme={VictoryTheme.material}>
                     <VictoryStack >

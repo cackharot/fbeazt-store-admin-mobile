@@ -11,8 +11,8 @@ class OrderStatusFilter extends Component {
         this.state = {
             filter: {
                 PENDING: true,
-                PREPARING: true,
-                PROGRESS: true,
+                PREPARING: false,
+                PROGRESS: false,
                 DELIVERED: false,
                 PAID: false,
                 CANCELLED: false
@@ -34,7 +34,7 @@ class OrderStatusFilter extends Component {
         const { onChange } = this.props;
         var st = {};
         Object.assign(st, this.state.filter);
-        st[filterStatus] = !st[filterStatus];
+        Object.keys(st).forEach((x) => st[x] = x === filterStatus);
         this.setState({ filter: st }, () => {
             onChange(st);
         });

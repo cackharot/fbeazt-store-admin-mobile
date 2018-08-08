@@ -41,24 +41,22 @@ class OrderList extends Component {
             filter: {
                 only_today: true,
                 PENDING: true,
-                PREPARING: true,
-                PROGRESS: true,
+                PREPARING: false,
+                PROGRESS: false,
                 DELIVERED: false,
                 PAID: false,
                 CANCELLED: false
             },
             statusCounts: {},
             statusCountsParams:{
-                year: d.year(),
-                month: d.month() + 1,
-                day: d.date()
+                start_date: d.toDate(),
+                end_date: d.toDate()
             }
         };
 
         this._viewOrder = this._viewOrder.bind(this);
         this._onFilterChange = this._onFilterChange.bind(this);
         this._onRefresh = this._onRefresh.bind(this);
-        this.updateFilter = this.updateFilter.bind(this);
     }
 
     async componentDidMount() {
@@ -82,13 +80,6 @@ class OrderList extends Component {
         // if (nextProps.storeOrders) this.setState({ isLoading: false });
     }
 
-    updateFilter(filter){
-        // console.log(`Update order list filter to:`, filter);
-        this.setState({filter}, () => {
-            this._onRefresh();
-        });
-    }
-
     showFilter() {
         Navigation.showModal({
             stack: {
@@ -97,7 +88,7 @@ class OrderList extends Component {
                         name: 'app.OrderListFilter',
                         passProps: {
                             filter: this.state.filter,
-                            update: this.updateFilter
+                            update: this._onFilterChange
                         },
                         options: {
                             topBar: {
@@ -150,6 +141,14 @@ class OrderList extends Component {
             isRefreshing: true,
             filter: Object.assign(this.state.filter, filter)
         });
+        if(!filter.only_today){
+            await this.setState({
+                statusCountsParams: {
+                    start_date: filter.start_date,
+                    end_date: filter.end_date
+                }
+            });
+        }
         await this._retrieveOrders(true);
     }
 

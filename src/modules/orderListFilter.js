@@ -39,20 +39,20 @@ class OrderListFilter extends Component {
         return (
             <Container>
                 <Content>
-                    <ListItem>
+                    <ListItem onPressOut={() => this.updateFilter('only_today', true) }>
                         <Left>
                             <Text>Show only today orders</Text>
                         </Left>
                         <Right>
-                            <Radio selected={filter.only_today}  onPressOut={() => this.updateFilter('only_today', true) } />
+                            <Radio selected={filter.only_today}/>
                         </Right>
                     </ListItem>
-                    <ListItem>
+                    <ListItem onPressOut={() => this.updateFilter('only_today', false)}>
                         <Left>
                             <Text>Custom Date Range</Text>
                         </Left>
                         <Right>
-                            <Radio selected={!filter.only_today} onPressOut={() => this.updateFilter('only_today', false) } />
+                            <Radio selected={!filter.only_today}/>
                         </Right>
                     </ListItem>
                     {!filter.only_today && (
