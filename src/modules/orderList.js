@@ -32,7 +32,7 @@ class OrderList extends Component {
     constructor(props) {
         super(props);
         Navigation.events().bindComponent(this);
-        const d = moment().utc().local(true);
+        const d = moment().local(true);
         this.state = {
             list: [],
             isLoading: true,
@@ -40,6 +40,8 @@ class OrderList extends Component {
             showToast: false,
             filter: {
                 only_today: true,
+                start_date: d.toDate(),
+                end_date: d.toDate(),
                 PENDING: true,
                 PREPARING: false,
                 PROGRESS: false,
@@ -141,11 +143,19 @@ class OrderList extends Component {
             isRefreshing: true,
             filter: Object.assign(this.state.filter, filter)
         });
-        if(!filter.only_today){
+        if(filter.only_today === false && filter.start_date){
             await this.setState({
                 statusCountsParams: {
                     start_date: filter.start_date,
                     end_date: filter.end_date
+                }
+            });
+        }else if(filter.only_today !== undefined && filter.only_today === true){
+            const d = moment().local(true);
+            await this.setState({
+                statusCountsParams: {
+                    start_date: d.toDate(),
+                    end_date: d.toDate()
                 }
             });
         }

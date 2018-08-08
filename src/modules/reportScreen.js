@@ -38,7 +38,7 @@ class ReportScreen extends Component {
     constructor(props) {
         super(props);
         Navigation.events().bindComponent(this);
-        const d = moment().utc().local(true);
+        const d = moment().local(true);
         this.state = {
             isLoading: true,
             categories: ['Total', 'Paid', 'Delivered', 'Cancelled'],
