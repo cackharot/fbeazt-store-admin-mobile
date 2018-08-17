@@ -19,16 +19,18 @@ const styles = StyleSheet.create({
     itemPrice: {
         paddingTop: 13,
         color: 'white',
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: '800'
     },
     itemName: {
         color: 'white',
-        fontSize: 24,
-        fontWeight: '900'
+        fontSize: 20,
+        fontWeight: '900',
+        flexWrap: 'wrap',
+        flex: 1
     },
     itemVarieties: {
-        fontSize: 22,
+        fontSize: 18,
         color: 'white',
     },
     itemCuisines: {
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     timeago: {
         paddingVertical: 10,
         color: 'white',
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: '700',
         ...Platform.select({
             ios: {
@@ -72,11 +74,10 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     detailHeaderContainer: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        paddingHorizontal: 18,
+        alignItems: 'stretch',
+        paddingHorizontal: 18
     },
     progressBar: {
         backgroundColor: '#4B7AAC',

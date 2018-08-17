@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     itemPrice:{
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
+        fontWeight: '400',
         color: '#595E63'
     },
     itemName: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: '400',
         color: '#595E63'
     },
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     price: {
         paddingTop: 13,
         color: 'white',
-        fontSize: 28,
+        fontSize: 23,
         fontWeight: '800'
     },
     detailHeaderContainer: {

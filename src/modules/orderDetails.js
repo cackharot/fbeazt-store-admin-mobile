@@ -159,18 +159,16 @@ class OrderDetails extends Component {
                             <View>
                                 <ImageBackground source={require('../images/detail_bg.jpg')} style={styles.imageBackdrop} >
                                     <View style={styles.detailHeaderContainer}>
-                                        <View>
-                                            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                                        <View style={{ marginRight: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <View style={{flexDirection: 'row'}}>
                                                 <OrderStatusIcon asButton status={order.status} iconStyle={styles.statusIcon} />
                                                 <Text style={styles.orderno}>#{order.store_order_no.toUpperCase()}</Text>
                                             </View>
-                                            <View style={{ paddingLeft: 38 }}>
-                                                <Text style={styles.orderitems}>{order.items.length} items</Text>
-                                                <Text style={styles.timeago}>{orderDate.format('DD/MM/YYYY LT')} ({dateStr})</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{ alignSelf: 'flex-start' }}>
                                             <Text style={styles.orderTotal}>₹{order.payable.toFixed(2)}</Text>
+                                        </View>
+                                        <View style={{ paddingLeft: 38 }}>
+                                            <Text style={styles.orderitems}>{order.items.length} items</Text>
+                                            <Text style={styles.timeago}>{orderDate.format('DD/MM/YYYY LT')} ({dateStr})</Text>
                                         </View>
                                     </View>
                                 </ImageBackground>
@@ -182,24 +180,26 @@ class OrderDetails extends Component {
                             <View>
                                 <List noIndent dataArray={order.items}
                                     renderRow={(item) =>
-                                               <ListItem noIndent icon style={{paddingLeft: 6}}>
-                                               <Left>
-                                               <Button transparent>
-                                               <Badge primary><Text>{item.quantity}</Text></Badge>
-                                               </Button>
-                                               </Left>
-                                            <Body>
-                                               <Text>{item.name}</Text>
-                                               {item.category === 'combo' && (
-                                                       <Text note>{item.description.replace("\n", ", ")}</Text>
-                                               )}
+                                        <ListItem noIndent icon style={{paddingLeft: 6, height: undefined}}>
+                                            <Left>
+                                                <Button transparent>
+                                                    <Badge primary><Text>{item.quantity}</Text></Badge>
+                                                </Button>
+                                            </Left>
+                                            <Body style={{height: item.category === 'combo' ? 130 : undefined}}>
+                                                <Text>{item.name}</Text>
+                                                {item.category === 'combo' && (
+                                                    <Text note style={{fontSize: 12, flex: 1, flexWrap: 'wrap'}}>
+                                                        {item.description.replace("\n", ", ")}
+                                                    </Text>
+                                                )}
                                                 {item.price_detail && item.price_detail.price > 0.0 && (
                                                     <Text>{item.price_detail.description}</Text>
                                                 )}
                                             </Body>
-                                            <Right>
-                                               <Text note>{item.price}x{item.quantity}      </Text>
-                                                <Text>{item.total}</Text>
+                                            <Right style={{height: item.category === 'combo' ? 130 : undefined}}>
+                                               <Text note>{item.price}x{item.quantity}</Text>
+                                               <Text>{item.total}</Text>
                                             </Right>
                                         </ListItem>
                                     }>

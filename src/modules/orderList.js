@@ -176,7 +176,7 @@ class OrderList extends Component {
             dataSource,
             isLoading: false
         });
-        // this._viewOrder(this.props.storeOrders.items[2]._id.$oid);
+        // this._viewOrder(this.props.storeOrders.items[0]._id.$oid);
         if (isRefreshed) {
             this.setState({ isRefreshing: false });
         }

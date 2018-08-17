@@ -25,14 +25,12 @@ const styles = StyleSheet.create({
         width: null,
         flex: 1,
         flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'flex-end',
         paddingBottom: 10
     },
     detailHeaderContainer: {
-        flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'stretch',
     },
     statusIcon: {
         color: 'white',
@@ -50,7 +48,7 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         ...Platform.select({
             android: {
-                fontSize: 26
+                fontSize: 23
             }
         })
     },
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         ...Platform.select({
             android: {
-                fontSize: 26
+                fontSize: 23
             }
         })
     },

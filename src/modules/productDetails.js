@@ -76,21 +76,21 @@ class ProductDetails extends Component {
             <View>
               <ImageBackground source={require('../images/detail_bg.jpg')} style={styles.imageBackdrop} >
                 <View style={styles.detailHeaderContainer}>
-                  <View>
-                    <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-                      <Icon name="pizza" active style={styles.statusIcon} />
-                      <Text style={styles.itemName}>{product.name}</Text>
+                    <View style={{flex: 0.7}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+                            <Icon name="pizza" active style={styles.statusIcon} />
+                            <Text numberOfLines={2} style={styles.itemName}>{product.name}</Text>
+                        </View>
+                        <View style={{ paddingLeft: 38 }}>
+                        {product.price_table.length > 0 &&
+                            <Text note style={styles.itemVarieties}>{product.price_table.length} varieties</Text>
+                        }
+                        <Text note style={styles.itemCuisines}>{product.cuisines.join(",")}</Text>
+                        </View>
                     </View>
-                    <View style={{ paddingLeft: 38 }}>
-                      {product.price_table.length > 0 &&
-                        <Text note style={styles.itemVarieties}>{product.price_table.length} varieties</Text>
-                      }
-                      <Text note style={styles.itemCuisines}>{product.cuisines.join(",")}</Text>
-                    </View>
-                  </View>
-            {product.price_table.length ===0 && (
-                  <View style={{ flexDirection: 'column', alignSelf: 'flex-end' }}>
-                    <Text style={styles.itemPrice}>₹{parseFloat(product.sell_price).toFixed(2)}</Text>
+            {product.price_table.length === 0 && (
+                    <View style={{ flex: 0.3, flexDirection: 'column', alignItems: 'flex-end', alignSelf: 'flex-end' }}>
+                        <Text style={styles.itemPrice}>₹{parseFloat(product.sell_price).toFixed(2)}</Text>
                     </View>
             )}
                 </View>
